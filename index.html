@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AOSUNLOCK.ID FIRMWARE - Huawei Download Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0d1117 0%, #1a1f2e 100%);
+            color: #e6edf3;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #0ea5a4 0%, #00b8d4 100%);
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 32px rgba(0, 184, 212, 0.3);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        header p {
+            font-size: 1.1em;
+            color: #e6fffb;
+            font-weight: 500;
+        }
+
+        .search-section {
+            background: #161b22;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-box {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 15px 20px;
+            background: #0d1117;
+            border: 2px solid #30363d;
+            border-radius: 8px;
+            color: #e6edf3;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #00b8d4;
+            box-shadow: 0 0 0 3px rgba(0, 184, 212, 0.1);
+        }
+
+        .search-input::placeholder {
+            color: #8b949e;
+        }
+
+        .filter-select {
+            padding: 15px 20px;
+            background: #0d1117;
+            border: 2px solid #30363d;
+            border-radius: 8px;
+            color: #e6edf3;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #00b8d4;
+        }
+
+        .firmware-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .firmware-card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 16px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .firmware-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 184, 212, 0.2);
+            border-color: #00b8d4;
+        }
+
+        .firmware-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #21262d;
+        }
+
+        .device-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #0ea5a4 0%, #00b8d4 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .firmware-title {
+            flex: 1;
+        }
+
+        .firmware-title h3 {
+            font-size: 1.05em;
+            color: #ffffff;
+            margin-bottom: 3px;
+        }
+
+        .firmware-title .model {
+            font-size: 0.8em;
+            color: #8b949e;
+        }
+
+        .firmware-info {
+            display: grid;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0;
+        }
+
+        .info-label {
+            color: #8b949e;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+
+        .info-value {
+            color: #e6edf3;
+            font-weight: 600;
+            font-size: 0.85em;
+        }
+
+        .info-value.highlight {
+            color: #00b8d4;
+        }
+
+        .download-btn {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, #0ea5a4 0%, #00b8d4 100%);
+            border: none;
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .download-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 16px rgba(0, 184, 212, 0.4);
+        }
+
+        .download-btn:active {
+            transform: scale(0.98);
+        }
+
+        .download-icon {
+            font-size: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: #161b22;
+            border-radius: 12px;
+            margin-top: 40px;
+            border: 1px solid #30363d;
+        }
+
+        footer p {
+            color: #8b949e;
+            margin-bottom: 10px;
+        }
+
+        footer .contact {
+            color: #00b8d4;
+            font-weight: 600;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            background: #161b22;
+            border-radius: 12px;
+            border: 1px solid #30363d;
+        }
+
+        .no-results h3 {
+            color: #8b949e;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .no-results p {
+            color: #6e7681;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .firmware-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .search-input {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔓 AOSUNLOCK.ID FIRMWARE</h1>
+            <p>Huawei Firmware Solution</p>
+        </header>
+
+        <div class="search-section">
+            <div class="search-box">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search by model, build, or version...">
+                <select id="androidFilter" class="filter-select">
+                    <option value="">All Android Versions</option>
+                    <option value="13">Android 13</option>
+                    <option value="12">Android 12</option>
+                    <option value="11">Android 11</option>
+                    <option value="10">Android 10</option>
+                    <option value="9">Android 9</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="firmwareGrid" class="firmware-grid"></div>
+        <div id="noResults" class="no-results" style="display: none;">
+            <h3>No firmware found</h3>
+            <p>Try adjusting your search or filter criteria</p>
+        </div>
+
+        <footer>
+            <p><strong>AOSUNLOCK.ID</strong> - Android Online Service</p>
+            <p class="contact">📱 WhatsApp: +62 822-3437-0999</p>
+            <p style="margin-top: 15px; font-size: 0.9em;">© 2025 AOSUNLOCK.ID. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        const firmwareData = [
+            {
+                model: "Huawei P40 Pro",
+                deviceCode: "ELS-NX9",
+                android: "11",
+                emui: "11.0.0",
+                build: "11.0.0.130",
+                size: "5.2 GB",
+                date: "2023-10-15",
+                region: "Global",
+                downloadUrl: "#"
+            },
+            {
+                model: "Huawei Mate 40 Pro",
+                deviceCode: "NOH-NX9",
+                android: "10",
+                emui: "11.0.0",
+                build: "11.0.0.165",
+                size: "5.8 GB",
+                date: "2023-09-20",
+                region: "China",
+                downloadUrl: "#"
+            },
+            {
+                model: "Huawei P30 Pro",
+                deviceCode: "VOG-L29",
+                android: "10",
+                emui: "10.1.0",
+                build: "10.1.0.195",
+                size: "4.9 GB",
+                date: "2023-08-10",
+                region: "Europe",
+                downloadUrl: "#"
+            },
+            {
+                model: "Huawei Nova 7",
+                deviceCode: "JEF-NX9",
+                android: "10",
+                emui: "10.1.0",
+                build: "10.1.0.140",
+                size: "4.5 GB",
+                date: "2023-07-25",
+                region: "Global",
+                downloadUrl: "#"
+            },
+            {
+                model: "Huawei Y9s",
+                deviceCode: "STK-LX1",
+                android: "9",
+                emui: "9.1.0",
+                build: "9.1.0.312",
+                size: "3.8 GB",
+                date: "2023-06-15",
+                region: "Asia",
+                downloadUrl: "#"
+            },
+            {
+                model: "Honor 20 Pro",
+                deviceCode: "YAL-L21",
+                android: "10",
+                emui: "10.1.0",
+                build: "10.1.0.180",
+                size: "4.6 GB",
+                date: "2023-05-30",
+                region: "Europe",
+                downloadUrl: "#"
+            },
+            {
+                model: "Huawei P Smart 2021",
+                deviceCode: "PPA-LX2",
+                android: "10",
+                emui: "10.1.0",
+                build: "10.1.0.155",
+                size: "4.2 GB",
+                date: "2023-04-18",
+                region: "Global",
+                downloadUrl: "#"
+            },
+            {
+                model: "Huawei Mate 30 Pro",
+                deviceCode: "LIO-L29",
+                android: "10",
+                emui: "11.0.0",
+                build: "11.0.0.188",
+                size: "5.5 GB",
+                date: "2023-03-22",
+                region: "China",
+                downloadUrl: "#"
+            },
+            {
+                model: "Huawei P40 Lite",
+                deviceCode: "JNY-LX1",
+                android: "10",
+                emui: "10.1.1",
+                build: "10.1.1.200",
+                size: "4.3 GB",
+                date: "2023-02-10",
+                region: "Europe",
+                downloadUrl: "#"
+            },
+            {
+                model: "Honor 10 Lite",
+                deviceCode: "HRY-LX1",
+                android: "9",
+                emui: "9.1.0",
+                build: "9.1.0.280",
+                size: "3.5 GB",
+                date: "2023-01-15",
+                region: "Global",
+                downloadUrl: "#"
+            },
+            {
+                model: "Huawei Nova 8",
+                deviceCode: "ANG-AN00",
+                android: "10",
+                emui: "11.0.0",
+                build: "11.0.0.128",
+                size: "4.8 GB",
+                date: "2022-12-20",
+                region: "China",
+                downloadUrl: "#"
+            },
+            {
+                model: "Huawei Y7a",
+                deviceCode: "FRL-L22",
+                android: "10",
+                emui: "10.1.0",
+                build: "10.1.0.145",
+                size: "4.0 GB",
+                date: "2022-11-08",
+                region: "Asia",
+                downloadUrl: "#"
+            }
+        ];
+
+        let currentFilter = {
+            search: '',
+            android: ''
+        };
+
+        function renderFirmware(data) {
+            const grid = document.getElementById('firmwareGrid');
+            const noResults = document.getElementById('noResults');
+
+            if (data.length === 0) {
+                grid.style.display = 'none';
+                noResults.style.display = 'block';
+                return;
+            }
+
+            grid.style.display = 'grid';
+            noResults.style.display = 'none';
+
+            grid.innerHTML = data.map(fw => `
+                <div class="firmware-card">
+                    <div class="firmware-header">
+                        <div class="device-icon">📱</div>
+                        <div class="firmware-title">
+                            <h3>${fw.model}</h3>
+                            <div class="model">${fw.deviceCode}</div>
+                        </div>
+                    </div>
+                    <div class="firmware-info">
+                        <div class="info-row">
+                            <span class="info-label">Android Version</span>
+                            <span class="info-value highlight">Android ${fw.android}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">EMUI</span>
+                            <span class="info-value">${fw.emui}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Build Number</span>
+                            <span class="info-value">${fw.build}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">File Size</span>
+                            <span class="info-value">${fw.size}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Region</span>
+                            <span class="info-value">${fw.region}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Release Date</span>
+                            <span class="info-value">${fw.date}</span>
+                        </div>
+                    </div>
+                    <button class="download-btn" onclick="downloadFirmware('${fw.model}', '${fw.downloadUrl}')">
+                        <span class="download-icon">⬇</span>
+                        <span>Download Firmware</span>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function filterFirmware() {
+            let filtered = firmwareData;
+
+            if (currentFilter.search) {
+                const search = currentFilter.search.toLowerCase();
+                filtered = filtered.filter(fw => 
+                    fw.model.toLowerCase().includes(search) ||
+                    fw.deviceCode.toLowerCase().includes(search) ||
+                    fw.build.toLowerCase().includes(search) ||
+                    fw.region.toLowerCase().includes(search)
+                );
+            }
+
+            if (currentFilter.android) {
+                filtered = filtered.filter(fw => fw.android === currentFilter.android);
+            }
+
+            renderFirmware(filtered);
+        }
+
+        function downloadFirmware(model, url) {
+            alert(`Download link for ${model}\n\nNote: Replace this with actual download logic or redirect to download page.\n\nURL: ${url}`);
+        }
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            currentFilter.search = e.target.value;
+            filterFirmware();
+        });
+
+        document.getElementById('androidFilter').addEventListener('change', (e) => {
+            currentFilter.android = e.target.value;
+            filterFirmware();
+        });
+
+        // Initial render
+        renderFirmware(firmwareData);
+    </script>
+</body>
+</html>
