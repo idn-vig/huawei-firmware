@@ -11,40 +11,1582 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #0d1117 0%, #1a1f2e 100%);
             color: #e6edf3;
             min-height: 100vh;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0d1117 0%, #1a1f2e 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loading-logo {
+            font-size: 4em;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .loading-text {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #00b8d4;
+            font-weight: 600;
+        }
+
+        .loading-spinner {
+            margin-top: 20px;
+            width: 50px;
+            height: 50px;
+            border: 4px solid #30363d;
+            border-top: 4px solid #00b8d4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(22, 27, 34, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            z-index: 1000;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .navbar.visible {
+            transform: translateY(0);
+        }
+
+        .navbar .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .navbar-logo {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #00b8d4;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar-menu {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .navbar-menu a {
+            color: #e6edf3;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .navbar-menu a:hover {
+            color: #00b8d4;
+        }
+
+        .navbar-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #00b8d4;
+            transition: width 0.3s;
+        }
+
+        .navbar-menu a:hover::after {
+            width: 100%;
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #00b8d4;
+            transition: all 0.3s;
+            border-radius: 2px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 300px;
+            height: 100vh;
+            background: rgba(22, 27, 34, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 80px 30px 30px;
+            transition: right 0.3s ease;
+            z-index: 999;
+            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-menu a {
+            display: block;
+            color: #e6edf3;
+            text-decoration: none;
+            padding: 15px 0;
+            font-weight: 500;
+            border-bottom: 1px solid #30363d;
+            transition: all 0.3s;
+        }
+
+        .mobile-menu a:hover {
+            color: #00b8d4;
+            padding-left: 10px;
+        }
+
+        /* Mobile Bottom Nav */
+        .mobile-bottom-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(22, 27, 34, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 10px 0;
+            z-index: 998;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .mobile-bottom-nav-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            color: #8b949e;
+            text-decoration: none;
+            font-size: 0.7em;
+            transition: all 0.3s;
+            padding: 5px 15px;
+            border-radius: 8px;
+        }
+
+        .mobile-nav-item.active {
+            color: #00b8d4;
+            background: rgba(0, 184, 212, 0.1);
+        }
+
+        .mobile-nav-item span:first-child {
+            font-size: 1.8em;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 100px 20px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            font-size: 0.9em;
+            color: #8b949e;
+        }
+
+        .breadcrumb a {
+            color: #00b8d4;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .breadcrumb a:hover {
+            opacity: 0.7;
+        }
+
+        .breadcrumb span {
+            color: #30363d;
+        }
+
+        /* Cookie Consent Banner */
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(22, 27, 34, 0.98);
+            backdrop-filter: blur(10px);
             padding: 20px;
+            z-index: 9998;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+
+        .cookie-banner.visible {
+            transform: translateY(0);
+        }
+
+        .cookie-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .cookie-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .cookie-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .cookie-btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .cookie-accept {
+            background: linear-gradient(135deg, #0ea5a4 0%, #00b8d4 100%);
+            color: white;
+        }
+
+        .cookie-accept:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 184, 212, 0.4);
+        }
+
+        .cookie-decline {
+            background: transparent;
+            color: #8b949e;
+            border: 1px solid #30363d;
+        }
+
+        .cookie-decline:hover {
+            border-color: #00b8d4;
+            color: #00b8d4;
+        }
+
+        /* Newsletter Popup */
+        .newsletter-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            width: 90%;
+            max-width: 500px;
+            background: linear-gradient(135deg, #161b22 0%, #1f2937 100%);
+            border-radius: 20px;
+            padding: 40px;
+            z-index: 10000;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .newsletter-popup.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .newsletter-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .newsletter-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .newsletter-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: transparent;
+            border: none;
+            color: #8b949e;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .newsletter-close:hover {
+            color: #00b8d4;
+            transform: rotate(90deg);
+        }
+
+        .newsletter-icon {
+            font-size: 3em;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .newsletter-title {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #00b8d4;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .newsletter-subtitle {
+            color: #8b949e;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .newsletter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .newsletter-input {
+            padding: 15px;
+            background: rgba(48, 54, 61, 0.5);
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            color: #e6edf3;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        .newsletter-input:focus {
+            outline: none;
+            border-color: #00b8d4;
+            background: rgba(48, 54, 61, 0.8);
+        }
+
+        .newsletter-submit {
+            padding: 15px;
+            background: linear-gradient(135deg, #0ea5a4 0%, #00b8d4 100%);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .newsletter-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 184, 212, 0.4);
+        }
+
+        /* Trust Badges */
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            padding: 40px 20px;
+            flex-wrap: wrap;
+            background: rgba(22, 27, 34, 0.5);
+        }
+
+        .trust-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding: 20px;
+            background: rgba(48, 54, 61, 0.3);
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .trust-badge:hover {
+            transform: translateY(-5px);
+            background: rgba(48, 54, 61, 0.5);
+        }
+
+        .trust-icon {
+            font-size: 2.5em;
+        }
+
+        .trust-text {
+            font-size: 0.9em;
+            color: #8b949e;
+            text-align: center;
+        }
+
+        /* FAB Menu */
+        .fab-menu {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            z-index: 997;
+        }
+
+        .fab-main {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #0ea5a4 0%, #00b8d4 100%);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0, 184, 212, 0.4);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fab-main:hover {
+            transform: rotate(45deg) scale(1.1);
+        }
+
+        .fab-main.active {
+            transform: rotate(45deg);
+        }
+
+        .fab-options {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s;
+        }
+
+        .fab-options.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .fab-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            background: rgba(22, 27, 34, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid #30363d;
+            border-radius: 25px;
+            color: #e6edf3;
+            text-decoration: none;
+            font-size: 0.9em;
+            white-space: nowrap;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .fab-option:hover {
+            background: rgba(0, 184, 212, 0.2);
+            border-color: #00b8d4;
+            transform: translateX(-5px);
+        }
+
+        .fab-option span:first-child {
+            font-size: 1.3em;
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #0ea5a4 0%, #00b8d4 100%);
+            border: none;
+            border-radius: 50%;
+            color: #ffffff;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0, 184, 212, 0.4);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 184, 212, 0.6);
+        }
+
+        /* Floating Social Media Sidebar */
+        .social-sidebar {
+            position: fixed;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 998;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .social-item {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 1.5em;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-item::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            right: 100%;
+            background: rgba(22, 27, 34, 0.95);
+            color: #ffffff;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateX(10px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            margin-right: 10px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .social-item:hover::before {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .social-item:hover {
+            width: 70px;
+        }
+
+        .social-whatsapp {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+        }
+
+        .social-whatsapp:hover {
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.5);
+        }
+
+        .social-facebook {
+            background: linear-gradient(135deg, #1877F2 0%, #0C63D4 100%);
+        }
+
+        .social-facebook:hover {
+            box-shadow: 0 4px 20px rgba(24, 119, 242, 0.5);
+        }
+
+        .social-instagram {
+            background: linear-gradient(135deg, #E4405F 0%, #C13584 50%, #833AB4 100%);
+        }
+
+        .social-instagram:hover {
+            box-shadow: 0 4px 20px rgba(228, 64, 95, 0.5);
+        }
+
+        .social-telegram {
+            background: linear-gradient(135deg, #0088cc 0%, #006699 100%);
+        }
+
+        .social-telegram:hover {
+            box-shadow: 0 4px 20px rgba(0, 136, 204, 0.5);
+        }
+
+        /* Floating WhatsApp Chat Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 999;
+        }
+
+        .whatsapp-button {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 2em;
+            text-decoration: none;
+            box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4);
+            animation: pulse-whatsapp 2s ease-in-out infinite;
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 24px rgba(37, 211, 102, 0.6);
+        }
+
+        @keyframes pulse-whatsapp {
+            0%, 100% {
+                box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4);
+            }
+            50% {
+                box-shadow: 0 4px 24px rgba(37, 211, 102, 0.7), 0 0 0 10px rgba(37, 211, 102, 0.1);
+            }
+        }
+
+        .whatsapp-tooltip {
+            position: absolute;
+            left: 70px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(22, 27, 34, 0.95);
+            color: #ffffff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .whatsapp-tooltip::before {
+            content: '';
+            position: absolute;
+            right: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 8px solid transparent;
+            border-right-color: rgba(22, 27, 34, 0.95);
+        }
+
+        .whatsapp-float:hover .whatsapp-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Running Marquee/Ticker */
+        .marquee-container {
+            background: linear-gradient(135deg, #0ea5a4 0%, #00b8d4 100%);
+            padding: 15px 0;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 4px 16px rgba(0, 184, 212, 0.3);
+        }
+
+        .marquee-content {
+            display: flex;
+            animation: marquee 30s linear infinite;
+            white-space: nowrap;
+        }
+
+        .marquee-item {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 80px;
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 1em;
+        }
+
+        .marquee-icon {
+            margin-right: 10px;
+            font-size: 1.3em;
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .marquee-content:hover {
+            animation-play-state: paused;
+        }
+
+        /* Firmware Category Tabs */
+        .category-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(22, 27, 34, 0.5);
+            border-radius: 12px;
+        }
+
+        .category-tab {
+            padding: 12px 25px;
+            background: #161b22;
+            border: 2px solid #30363d;
+            border-radius: 8px;
+            color: #e6edf3;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .category-tab:hover {
+            border-color: #00b8d4;
+            transform: translateY(-2px);
+        }
+
+        .category-tab.active {
+            background: linear-gradient(135deg, #0ea5a4 0%, #00b8d4 100%);
+            border-color: transparent;
+            color: #ffffff;
+            box-shadow: 0 4px 16px rgba(0, 184, 212, 0.4);
+        }
+
+        /* Advanced Filter Sidebar */
+        .firmware-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        .filter-sidebar {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 25px;
+            position: sticky;
+            top: 100px;
+        }
+
+        .filter-section {
+            margin-bottom: 25px;
+        }
+
+        .filter-section h4 {
+            color: #00b8d4;
+            margin-bottom: 15px;
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .filter-option:hover {
+            color: #00b8d4;
+        }
+
+        .filter-option input[type="checkbox"] {
+            margin-right: 10px;
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+        }
+
+        .filter-option label {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .filter-count {
+            color: #8b949e;
+            font-size: 0.9em;
+        }
+
+        .filter-reset {
+            width: 100%;
+            padding: 10px;
+            background: transparent;
+            border: 2px solid #30363d;
+            border-radius: 8px;
+            color: #8b949e;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .filter-reset:hover {
+            border-color: #00b8d4;
+            color: #00b8d4;
+        }
+
+        /* Compare Mode */
+        .compare-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(22, 27, 34, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.3);
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            z-index: 997;
+            border-top: 2px solid #00b8d4;
+        }
+
+        .compare-bar.visible {
+            transform: translateY(0);
+        }
+
+        .compare-bar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .compare-items {
+            display: flex;
+            gap: 15px;
+            flex: 1;
+        }
+
+        .compare-item {
+            background: #0d1117;
+            padding: 10px 15px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #30363d;
+        }
+
+        .compare-remove {
+            background: none;
+            border: none;
+            color: #8b949e;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: color 0.3s;
+        }
+
+        .compare-remove:hover {
+            color: #ff6b6b;
+        }
+
+        .compare-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .compare-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .compare-btn-primary {
+            background: linear-gradient(135deg, #0ea5a4 0%, #00b8d4 100%);
+            color: #ffffff;
+        }
+
+        .compare-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 184, 212, 0.4);
+        }
+
+        .compare-btn-secondary {
+            background: transparent;
+            color: #8b949e;
+            border: 1px solid #30363d;
+        }
+
+        .compare-btn-secondary:hover {
+            border-color: #00b8d4;
+            color: #00b8d4;
+        }
+
+        /* Compare Modal */
+        .compare-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(13, 17, 23, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 9998;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .compare-modal.visible {
+            display: flex;
+        }
+
+        .compare-modal-content {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            max-width: 1200px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+        }
+
+        .compare-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #30363d;
+        }
+
+        .compare-modal-header h2 {
+            color: #00b8d4;
+            font-size: 1.8em;
+        }
+
+        .compare-close {
+            background: none;
+            border: none;
+            color: #8b949e;
+            font-size: 2em;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .compare-close:hover {
+            color: #ff6b6b;
+        }
+
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .compare-table th,
+        .compare-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #30363d;
+        }
+
+        .compare-table th {
+            background: #0d1117;
+            color: #00b8d4;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        .compare-table td {
+            color: #e6edf3;
+        }
+
+        .compare-table tr:hover {
+            background: rgba(0, 184, 212, 0.05);
+        }
+
+        /* Scroll Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 0 20px;
         }
 
-        header {
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            padding: 40px 20px;
-            background: linear-gradient(135deg, #0ea5a4 0%, #00b8d4 100%);
-            border-radius: 12px;
-            margin-bottom: 40px;
-            box-shadow: 0 8px 32px rgba(0, 184, 212, 0.3);
+            padding: 100px 20px 60px;
+            position: relative;
+            overflow: hidden;
         }
 
-        header h1 {
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 184, 212, 0.1) 0%, transparent 70%);
+            animation: heroGlow 8s ease-in-out infinite;
+        }
+
+        @keyframes heroGlow {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+        }
+
+        .hero-icon {
+            font-size: 6em;
+            margin-bottom: 30px;
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero h1 {
+            font-size: 3.5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #0ea5a4 0%, #00b8d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3em;
+            color: #8b949e;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .hero-description {
+            font-size: 1.1em;
+            color: #6e7681;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-btn {
+            padding: 15px 40px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .hero-btn-primary {
+            background: linear-gradient(135deg, #0ea5a4 0%, #00b8d4 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 16px rgba(0, 184, 212, 0.3);
+        }
+
+        .hero-btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 24px rgba(0, 184, 212, 0.5);
+        }
+
+        .hero-btn-secondary {
+            background: transparent;
+            color: #00b8d4;
+            border: 2px solid #00b8d4;
+        }
+
+        .hero-btn-secondary:hover {
+            background: rgba(0, 184, 212, 0.1);
+            transform: translateY(-3px);
+        }
+
+        /* Stats Section */
+        .stats-section {
+            padding: 80px 20px;
+            background: linear-gradient(135deg, rgba(14, 165, 164, 0.1) 0%, rgba(0, 184, 212, 0.05) 100%);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 30px;
+            background: rgba(22, 27, 34, 0.5);
+            border-radius: 12px;
+            border: 1px solid #30363d;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: #00b8d4;
+            box-shadow: 0 8px 24px rgba(0, 184, 212, 0.2);
+        }
+
+        .stat-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .stat-number {
+            font-size: 3em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #0ea5a4 0%, #00b8d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.1em;
+            color: #8b949e;
+            font-weight: 500;
+        }
+
+        /* Testimonial Section */
+        .testimonial-section {
+            padding: 80px 20px;
+            background: #0d1117;
+        }
+
+        .section-title {
+            text-align: center;
             font-size: 2.5em;
             font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #0ea5a4 0%, #00b8d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        header p {
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2em;
+            color: #8b949e;
+            margin-bottom: 50px;
+        }
+
+        .testimonial-slider {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonial-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .testimonial-card {
+            min-width: 100%;
+            padding: 40px;
+            background: #161b22;
+            border-radius: 12px;
+            border: 1px solid #30363d;
+            text-align: center;
+        }
+
+        .testimonial-quote {
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #e6edf3;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .testimonial-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #0ea5a4 0%, #00b8d4 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+        }
+
+        .testimonial-info h4 {
+            color: #ffffff;
             font-size: 1.1em;
-            color: #e6fffb;
-            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .testimonial-info p {
+            color: #8b949e;
+            font-size: 0.9em;
+        }
+
+        .testimonial-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            background: #30363d;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: #00b8d4;
+            transform: scale(1.2);
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            padding: 80px 20px;
+            background: linear-gradient(135deg, rgba(14, 165, 164, 0.05) 0%, transparent 100%);
+        }
+
+        /* Services Section */
+        .services-section {
+            padding: 80px 20px;
+            background: linear-gradient(135deg, rgba(14, 165, 164, 0.1) 0%, transparent 100%);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 30px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, #0ea5a4 0%, #00b8d4 100%);
+            border-radius: 12px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: -1;
+        }
+
+        .service-card:hover::before {
+            opacity: 1;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0, 184, 212, 0.3);
+            border-color: transparent;
+        }
+
+        .service-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #0ea5a4 0%, #00b8d4 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .service-card h3 {
+            font-size: 1.5em;
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .service-card p {
+            color: #8b949e;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .service-features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 25px;
+        }
+
+        .service-features li {
+            color: #e6edf3;
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            font-size: 0.95em;
+        }
+
+        .service-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #00b8d4;
+            font-weight: bold;
+        }
+
+        .service-btn {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: 2px solid #00b8d4;
+            border-radius: 8px;
+            color: #00b8d4;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .service-btn:hover {
+            background: #00b8d4;
+            color: #ffffff;
+            transform: scale(1.02);
+        }
+
+        .service-price {
+            text-align: center;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(0, 184, 212, 0.1);
+            border-radius: 8px;
+        }
+
+        .service-price .price {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #00b8d4;
+        }
+
+        .service-price .price-label {
+            font-size: 0.9em;
+            color: #8b949e;
+            margin-top: 5px;
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: #00b8d4;
+        }
+
+        .faq-question {
+            padding: 20px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 1.1em;
+            color: #e6edf3;
+            transition: color 0.3s;
+        }
+
+        .faq-question:hover {
+            color: #00b8d4;
+        }
+
+        .faq-icon {
+            font-size: 1.5em;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            padding: 0 25px;
+            color: #8b949e;
+            line-height: 1.8;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            padding: 0 25px 20px;
+        }
+
+        /* Firmware Section */
+        .firmware-section {
+            padding: 80px 20px;
+            background: #0d1117;
         }
 
         .search-section {
@@ -101,8 +1643,8 @@
 
         .firmware-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
             margin-bottom: 40px;
         }
 
@@ -110,23 +1652,25 @@
             background: #161b22;
             border: 1px solid #30363d;
             border-radius: 8px;
-            padding: 16px;
-            transition: all 0.3s ease;
+            padding: 12px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
 
         .firmware-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 24px rgba(0, 184, 212, 0.2);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(0, 184, 212, 0.3);
             border-color: #00b8d4;
         }
 
         .firmware-header {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
-            padding-bottom: 10px;
+            gap: 8px;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
             border-bottom: 2px solid #21262d;
         }
 
@@ -142,12 +1686,191 @@
             flex-shrink: 0;
         }
 
+        /* Device Image Area */
+        .device-image {
+            width: 100%;
+            height: 160px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .device-image::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Realistic Phone Mockup */
+        .device-placeholder {
+            width: 100px;
+            height: 120px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+        }
+
+        .phone-frame {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #2d3748 0%, #1a202c 100%);
+            border-radius: 24px;
+            padding: 8px;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.5),
+                inset 0 1px 2px rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: inherit;
+            border-radius: 18px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .phone-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.15) 0%,
+                rgba(255, 255, 255, 0.05) 50%,
+                rgba(0, 0, 0, 0.1) 100%
+            );
+        }
+
+        /* Camera Notch */
+        .phone-notch {
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 35%;
+            height: 16px;
+            background: #1a202c;
+            border-radius: 0 0 12px 12px;
+            z-index: 10;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .phone-notch::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background: #4299e1;
+            border-radius: 50%;
+            box-shadow: 0 0 4px rgba(66, 153, 225, 0.6);
+        }
+
+        .phone-notch::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            right: 20%;
+            width: 12px;
+            height: 6px;
+            background: #2d3748;
+            border-radius: 3px;
+        }
+
+        /* Side Buttons */
+        .phone-button-left {
+            position: absolute;
+            left: -3px;
+            top: 30%;
+            width: 3px;
+            height: 25px;
+            background: linear-gradient(90deg, #1a202c 0%, #2d3748 100%);
+            border-radius: 2px 0 0 2px;
+            box-shadow: -1px 0 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .phone-button-right {
+            position: absolute;
+            right: -3px;
+            top: 25%;
+            width: 3px;
+            height: 40px;
+            background: linear-gradient(270deg, #1a202c 0%, #2d3748 100%);
+            border-radius: 0 2px 2px 0;
+            box-shadow: 1px 0 2px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Phone Content */
+        .phone-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 5;
+        }
+
+        .phone-icon {
+            font-size: 1.8em;
+            opacity: 0.9;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        .phone-brand {
+            margin-top: 5px;
+            font-size: 0.55em;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.9);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .device-model-badge {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 0.7em;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 10;
+        }
+
         .firmware-title {
             flex: 1;
         }
 
         .firmware-title h3 {
-            font-size: 1.05em;
+            font-size: 0.95em;
             color: #ffffff;
             margin-bottom: 3px;
         }
@@ -159,8 +1882,8 @@
 
         .firmware-info {
             display: grid;
-            gap: 8px;
-            margin-bottom: 12px;
+            gap: 6px;
+            margin-bottom: 10px;
         }
 
         .info-row {
@@ -172,14 +1895,14 @@
 
         .info-label {
             color: #8b949e;
-            font-size: 0.8em;
+            font-size: 0.72em;
             font-weight: 500;
         }
 
         .info-value {
             color: #e6edf3;
             font-weight: 600;
-            font-size: 0.85em;
+            font-size: 0.78em;
         }
 
         .info-value.highlight {
@@ -188,12 +1911,12 @@
 
         .download-btn {
             width: 100%;
-            padding: 10px;
+            padding: 8px;
             background: linear-gradient(135deg, #0ea5a4 0%, #00b8d4 100%);
             border: none;
             border-radius: 6px;
             color: #ffffff;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -218,11 +1941,70 @@
 
         footer {
             text-align: center;
-            padding: 30px;
+            padding: 60px 20px 30px;
             background: #161b22;
-            border-radius: 12px;
-            margin-top: 40px;
-            border: 1px solid #30363d;
+            border-top: 1px solid #30363d;
+            margin-top: 0;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            text-align: left;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            color: #00b8d4;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: #8b949e;
+            margin-bottom: 10px;
+            text-decoration: none;
+            display: block;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: #00b8d4;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: #30363d;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            color: #e6edf3;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background: linear-gradient(135deg, #0ea5a4 0%, #00b8d4 100%);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #30363d;
         }
 
         footer p {
@@ -254,12 +2036,46 @@
         }
 
         @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.8em;
+            .hero h1 {
+                font-size: 2.2em;
+            }
+
+            .hero-icon {
+                font-size: 4em;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .hero-btn {
+                width: 100%;
+            }
+
+            .navbar-menu {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .mobile-bottom-nav {
+                display: block;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
             }
 
             .firmware-grid {
                 grid-template-columns: 1fr;
+                padding-bottom: 80px;
             }
 
             .search-box {
@@ -269,44 +2085,1073 @@
             .search-input {
                 min-width: 100%;
             }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+
+            .social-sidebar {
+                display: none;
+            }
+
+            .whatsapp-float {
+                bottom: 90px;
+                left: 20px;
+            }
+
+            .whatsapp-button {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5em;
+            }
+
+            .whatsapp-tooltip {
+                display: none;
+            }
+
+            .firmware-container {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-sidebar {
+                position: fixed;
+                left: -100%;
+                top: 0;
+                height: 100vh;
+                background: rgba(22, 27, 34, 0.98);
+                backdrop-filter: blur(10px);
+                z-index: 998;
+                transition: left 0.3s ease;
+                padding-top: 80px;
+            }
+
+            .filter-sidebar.mobile-visible {
+                left: 0;
+            }
+
+            .compare-bar-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .fab-menu {
+                bottom: 80px;
+                right: 20px;
+            }
+
+            .fab-main {
+                width: 55px;
+                height: 55px;
+                font-size: 24px;
+            }
+
+            .back-to-top {
+                display: none;
+            }
+
+            .cookie-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .cookie-buttons {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .cookie-btn {
+                width: 100%;
+            }
+
+            .newsletter-popup {
+                width: 95%;
+                padding: 30px 20px;
+            }
+
+            .trust-badges {
+                gap: 15px;
+            }
+
+            .trust-badge {
+                flex: 1 1 45%;
+                min-width: 140px;
+            }
+
+            /* Mobile Card Optimization */
+            .device-image {
+                height: 150px;
+            }
+
+            .device-placeholder {
+                font-size: 3.5em;
+            }
+
+            .device-model-badge {
+                bottom: 10px;
+                left: 10px;
+                padding: 6px 12px;
+                font-size: 0.75em;
+            }
+
+            .firmware-card {
+                padding: 12px;
+            }
+
+            .firmware-header {
+                margin-bottom: 10px;
+                padding-bottom: 8px;
+            }
+
+            .firmware-title h3 {
+                font-size: 1.1em;
+            }
+
+            .firmware-title .model {
+                font-size: 0.8em;
+            }
+
+            .firmware-info {
+                gap: 8px;
+            }
+
+            .info-row {
+                padding: 8px 10px;
+            }
+
+            .info-label {
+                font-size: 0.75em;
+            }
+
+            .info-value {
+                font-size: 0.85em;
+            }
+
+            .download-btn {
+                padding: 12px;
+                font-size: 0.9em;
+            }
+
+            .download-icon {
+                font-size: 1.2em;
+            }
+
+            .compare-items {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+
+            .compare-actions {
+                width: 100%;
+            }
+
+            .compare-btn {
+                flex: 1;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🔓 AOSUNLOCK.ID FIRMWARE</h1>
-            <p>Huawei Firmware Solution</p>
-        </header>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-logo">🔓</div>
+        <div class="loading-text">AOSUNLOCK.ID</div>
+        <div class="loading-spinner"></div>
+    </div>
 
-        <div class="search-section">
-            <div class="search-box">
-                <input type="text" id="searchInput" class="search-input" placeholder="Search by model, build, or version...">
-                <select id="androidFilter" class="filter-select">
-                    <option value="">All Android Versions</option>
-                    <option value="13">Android 13</option>
-                    <option value="12">Android 12</option>
-                    <option value="11">Android 11</option>
-                    <option value="10">Android 10</option>
-                    <option value="9">Android 9</option>
-                </select>
+    <!-- Navigation Bar -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <a href="#hero" class="navbar-logo">
+                <span>🔓</span>
+                <span>AOSUNLOCK.ID</span>
+            </a>
+            <ul class="navbar-menu">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#stats">Stats</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#firmware">Firmware</a></li>
+                <li><a href="#testimonials">Reviews</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
         </div>
+    </nav>
 
-        <div id="firmwareGrid" class="firmware-grid"></div>
-        <div id="noResults" class="no-results" style="display: none;">
-            <h3>No firmware found</h3>
-            <p>Try adjusting your search or filter criteria</p>
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#hero">🏠 Home</a>
+        <a href="#stats">📊 Statistics</a>
+        <a href="#services">🛠️ Services</a>
+        <a href="#firmware">📱 Firmware</a>
+        <a href="#testimonials">⭐ Reviews</a>
+        <a href="#faq">❓ FAQ</a>
+        <a href="#contact">📞 Contact</a>
+    </div>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <a href="#hero">Home</a>
+        <span>›</span>
+        <span>Firmware Portal</span>
+    </div>
+
+    <!-- Running Marquee -->
+    <div class="marquee-container">
+        <div class="marquee-content" id="marqueeContent">
+            <div class="marquee-item">
+                <span class="marquee-icon">🔥</span>
+                <span>NEW: Kirin 9000 Unlock Solution Available!</span>
+            </div>
+            <div class="marquee-item">
+                <span class="marquee-icon">📱</span>
+                <span>100+ Firmware Files Added This Month</span>
+            </div>
+            <div class="marquee-item">
+                <span class="marquee-icon">⚡</span>
+                <span>Fast Remote Service - 1-24 Hours Processing</span>
+            </div>
+            <div class="marquee-item">
+                <span class="marquee-icon">🎉</span>
+                <span>Special Discount for Bulk Orders - Contact Us!</span>
+            </div>
+            <div class="marquee-item">
+                <span class="marquee-icon">✅</span>
+                <span>All Firmware Files Verified & Tested</span>
+            </div>
+            <!-- Duplicate for seamless loop -->
+            <div class="marquee-item">
+                <span class="marquee-icon">🔥</span>
+                <span>NEW: Kirin 9000 Unlock Solution Available!</span>
+            </div>
+            <div class="marquee-item">
+                <span class="marquee-icon">📱</span>
+                <span>100+ Firmware Files Added This Month</span>
+            </div>
+            <div class="marquee-item">
+                <span class="marquee-icon">⚡</span>
+                <span>Fast Remote Service - 1-24 Hours Processing</span>
+            </div>
+            <div class="marquee-item">
+                <span class="marquee-icon">🎉</span>
+                <span>Special Discount for Bulk Orders - Contact Us!</span>
+            </div>
+            <div class="marquee-item">
+                <span class="marquee-icon">✅</span>
+                <span>All Firmware Files Verified & Tested</span>
+            </div>
         </div>
+    </div>
 
-        <footer>
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">↑</button>
+
+    <!-- Floating WhatsApp Chat -->
+    <div class="whatsapp-float">
+        <a href="https://wa.me/6282234370999?text=Hi,%20saya%20ingin%20konsultasi%20tentang%20layanan%20AOSUNLOCK.ID" class="whatsapp-button" target="_blank">
+            💬
+        </a>
+        <div class="whatsapp-tooltip">Chat with us on WhatsApp</div>
+    </div>
+
+    <!-- Social Media Sidebar -->
+    <div class="social-sidebar">
+        <a href="https://wa.me/6282234370999" class="social-item social-whatsapp" target="_blank" data-tooltip="WhatsApp">
+            💬
+        </a>
+        <a href="https://facebook.com/aosunlocker" class="social-item social-facebook" target="_blank" data-tooltip="Facebook">
+            📘
+        </a>
+        <a href="https://instagram.com/aosunlocker.id" class="social-item social-instagram" target="_blank" data-tooltip="Instagram">
+            📷
+        </a>
+        <a href="https://t.me/aosunlocker" class="social-item social-telegram" target="_blank" data-tooltip="Telegram">
+            ✈️
+        </a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero fade-in" id="hero">
+        <div class="hero-content">
+            <div class="hero-icon">🔓</div>
+            <h1>AOSUNLOCK.ID FIRMWARE</h1>
+            <p class="hero-subtitle">Huawei Firmware Solution</p>
+            <p class="hero-description">
+                Download official Huawei & Honor firmware files for all models. 
+                Fast, secure, and reliable firmware downloads for your device.
+            </p>
+            <div class="hero-buttons">
+                <a href="#firmware" class="hero-btn hero-btn-primary">Browse Firmware</a>
+                <a href="https://wa.me/6282234370999" class="hero-btn hero-btn-secondary">Contact Support</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section fade-in" id="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📦</div>
+                    <div class="stat-number" data-target="150">0</div>
+                    <div class="stat-label">Firmware Files</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⬇️</div>
+                    <div class="stat-number" data-target="5000">0</div>
+                    <div class="stat-label">Total Downloads</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">😊</div>
+                    <div class="stat-number" data-target="1200">0</div>
+                    <div class="stat-label">Happy Customers</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Remote Services Section -->
+    <section class="services-section fade-in" id="services">
+        <div class="container">
+            <h2 class="section-title">Remote Services</h2>
+            <p class="section-subtitle">Professional Huawei device solutions - No need to ship your device</p>
+            
+            <div class="services-grid">
+                <!-- Chip Damage Service -->
+                <div class="service-card">
+                    <div class="service-icon">🔧</div>
+                    <h3>Chip Damage Repair</h3>
+                    <p>Professional chip-level repair for damaged Huawei devices</p>
+                    <ul class="service-features">
+                        <li>Boot loop / Stuck logo issues</li>
+                        <li>Hardware failure diagnosis</li>
+                        <li>EMMC/UFS chip repair</li>
+                        <li>100% remote solution</li>
+                    </ul>
+                    <button class="service-btn" onclick="contactService('Chip Damage Repair')">Contact for Price</button>
+                </div>
+
+                <!-- Remove Google ID -->
+                <div class="service-card">
+                    <div class="service-icon">🔓</div>
+                    <h3>Remove Google ID</h3>
+                    <p>Remove Google account lock (FRP) from Huawei devices</p>
+                    <ul class="service-features">
+                        <li>All Huawei & Honor models</li>
+                        <li>Safe & permanent removal</li>
+                        <li>No data loss</li>
+                        <li>Fast 1-24 hours service</li>
+                    </ul>
+                    <button class="service-btn" onclick="contactService('Remove Google ID')">Contact for Price</button>
+                </div>
+
+                <!-- Rebrand Service -->
+                <div class="service-card">
+                    <div class="service-icon">🎨</div>
+                    <h3>Rebrand Device</h3>
+                    <p>Change device branding to different region or carrier</p>
+                    <ul class="service-features">
+                        <li>Global to China branding</li>
+                        <li>Carrier unlock & rebrand</li>
+                        <li>Region change support</li>
+                        <li>Full firmware customization</li>
+                    </ul>
+                    <button class="service-btn" onclick="contactService('Rebrand Device')">Contact for Price</button>
+                </div>
+
+                <!-- MDM Remove -->
+                <div class="service-card">
+                    <div class="service-icon">🏢</div>
+                    <h3>MDM Remove</h3>
+                    <p>Remove Mobile Device Management (MDM) lock</p>
+                    <ul class="service-features">
+                        <li>Enterprise MDM removal</li>
+                        <li>School/Company locks</li>
+                        <li>Full access restoration</li>
+                        <li>Permanent solution</li>
+                    </ul>
+                    <button class="service-btn" onclick="contactService('MDM Remove')">Contact for Price</button>
+                </div>
+
+                <!-- PayJoy Remove -->
+                <div class="service-card">
+                    <div class="service-icon">💳</div>
+                    <h3>PayJoy Unlock</h3>
+                    <p>Remove PayJoy loan lock from devices</p>
+                    <ul class="service-features">
+                        <li>PayJoy lock removal</li>
+                        <li>Installment lock bypass</li>
+                        <li>Full device unlock</li>
+                        <li>Fast processing</li>
+                    </ul>
+                    <button class="service-btn" onclick="contactService('PayJoy Unlock')">Contact for Price</button>
+                </div>
+
+                <!-- Demo Remove -->
+                <div class="service-card">
+                    <div class="service-icon">📱</div>
+                    <h3>Demo Mode Remove</h3>
+                    <p>Remove demo/retail mode from display units</p>
+                    <ul class="service-features">
+                        <li>Retail demo removal</li>
+                        <li>Store display unlock</li>
+                        <li>Full functionality restore</li>
+                        <li>Convert to normal mode</li>
+                    </ul>
+                    <button class="service-btn" onclick="contactService('Demo Mode Remove')">Contact for Price</button>
+                </div>
+
+                <!-- Bootloader Unlock -->
+                <div class="service-card">
+                    <div class="service-icon">🔐</div>
+                    <h3>Bootloader Unlock</h3>
+                    <p>Unlock bootloader for custom ROM installation</p>
+                    <ul class="service-features">
+                        <li>All Huawei/Honor models</li>
+                        <li>Safe unlock process</li>
+                        <li>Root access enabled</li>
+                        <li>Custom recovery support</li>
+                    </ul>
+                    <button class="service-btn" onclick="contactService('Bootloader Unlock')">Contact for Price</button>
+                </div>
+
+                <!-- Full Service Package -->
+                <div class="service-card">
+                    <div class="service-icon">⭐</div>
+                    <h3>Full Service Package</h3>
+                    <p>Complete device solution - All problems fixed</p>
+                    <ul class="service-features">
+                        <li>FRP + MDM + PayJoy removal</li>
+                        <li>Firmware installation</li>
+                        <li>Bootloader unlock</li>
+                        <li>Priority support 24/7</li>
+                    </ul>
+                    <button class="service-btn" onclick="contactService('Full Service Package')">Contact for Price</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Firmware Section -->
+    <section class="firmware-section fade-in" id="firmware">
+        <div class="container">
+            <h2 class="section-title">Firmware Downloads</h2>
+            <p class="section-subtitle">Browse by category and find the perfect firmware for your device</p>
+
+            <!-- Category Tabs -->
+            <div class="category-tabs">
+                <div class="category-tab active" data-category="all" onclick="switchCategory('all')">
+                    <span>🌐</span> All Firmware
+                </div>
+                <div class="category-tab" data-category="otg" onclick="switchCategory('otg')">
+                    <span>🔌</span> OTG Firmware
+                </div>
+                <div class="category-tab" data-category="downgrade" onclick="switchCategory('downgrade')">
+                    <span>⬇️</span> Downgrade
+                </div>
+                <div class="category-tab" data-category="kirin9000" onclick="switchCategory('kirin9000')">
+                    <span>🚀</span> Kirin 9000
+                </div>
+                <div class="category-tab" data-category="spd" onclick="switchCategory('spd')">
+                    <span>⚡</span> SPD Solutions
+                </div>
+                <div class="category-tab" data-category="emergency" onclick="switchCategory('emergency')">
+                    <span>🆘</span> Emergency
+                </div>
+            </div>
+
+            <!-- Firmware Container with Sidebar -->
+            <div class="firmware-container">
+                <!-- Filter Sidebar -->
+                <div class="filter-sidebar">
+                    <h3 style="color: #ffffff; margin-bottom: 20px;">🔍 Filters</h3>
+                    
+                    <div class="filter-section">
+                        <h4>📱 Chipset</h4>
+                        <div class="filter-option">
+                            <input type="checkbox" id="chipset-kirin990" value="kirin990" onchange="applyFilters()">
+                            <label for="chipset-kirin990">Kirin 990</label>
+                            <span class="filter-count">(5)</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="chipset-kirin9000" value="kirin9000" onchange="applyFilters()">
+                            <label for="chipset-kirin9000">Kirin 9000</label>
+                            <span class="filter-count">(3)</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="chipset-kirin710" value="kirin710" onchange="applyFilters()">
+                            <label for="chipset-kirin710">Kirin 710</label>
+                            <span class="filter-count">(4)</span>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <h4>🌍 Region</h4>
+                        <div class="filter-option">
+                            <input type="checkbox" id="region-global" value="Global" onchange="applyFilters()">
+                            <label for="region-global">Global</label>
+                            <span class="filter-count">(4)</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="region-china" value="China" onchange="applyFilters()">
+                            <label for="region-china">China</label>
+                            <span class="filter-count">(3)</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="region-europe" value="Europe" onchange="applyFilters()">
+                            <label for="region-europe">Europe</label>
+                            <span class="filter-count">(3)</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="region-asia" value="Asia" onchange="applyFilters()">
+                            <label for="region-asia">Asia</label>
+                            <span class="filter-count">(2)</span>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <h4>💾 File Size</h4>
+                        <div class="filter-option">
+                            <input type="checkbox" id="size-small" value="small" onchange="applyFilters()">
+                            <label for="size-small">< 4 GB</label>
+                            <span class="filter-count">(3)</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="size-medium" value="medium" onchange="applyFilters()">
+                            <label for="size-medium">4-5 GB</label>
+                            <span class="filter-count">(6)</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="size-large" value="large" onchange="applyFilters()">
+                            <label for="size-large">> 5 GB</label>
+                            <span class="filter-count">(3)</span>
+                        </div>
+                    </div>
+
+                    <button class="filter-reset" onclick="resetFilters()">🔄 Reset Filters</button>
+                </div>
+
+                <!-- Firmware Grid -->
+                <div>
+                    <div class="search-section">
+                        <div class="search-box">
+                            <input type="text" id="searchInput" class="search-input" placeholder="Search by model, build, or version...">
+                            <select id="androidFilter" class="filter-select">
+                                <option value="">All Android Versions</option>
+                                <option value="13">Android 13</option>
+                                <option value="12">Android 12</option>
+                                <option value="11">Android 11</option>
+                                <option value="10">Android 10</option>
+                                <option value="9">Android 9</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="firmwareGrid" class="firmware-grid"></div>
+                    <div id="noResults" class="no-results" style="display: none;">
+                        <h3>No firmware found</h3>
+                        <p>Try adjusting your search or filter criteria</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Compare Bar -->
+    <div class="compare-bar" id="compareBar">
+        <div class="compare-bar-content">
+            <div class="compare-items" id="compareItems"></div>
+            <div class="compare-actions">
+                <button class="compare-btn compare-btn-primary" onclick="showCompareModal()">Compare Selected</button>
+                <button class="compare-btn compare-btn-secondary" onclick="clearCompare()">Clear All</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Compare Modal -->
+    <div class="compare-modal" id="compareModal">
+        <div class="compare-modal-content">
+            <div class="compare-modal-header">
+                <h2>📊 Firmware Comparison</h2>
+                <button class="compare-close" onclick="closeCompareModal()">×</button>
+            </div>
+            <div id="compareTableContainer"></div>
+        </div>
+    </div>
+
+    <!-- Testimonial Section -->
+    <section class="testimonial-section fade-in" id="testimonials">
+        <div class="container">
+            <h2 class="section-title">Customer Reviews</h2>
+            <p class="section-subtitle">What our customers say about us</p>
+            
+            <div class="testimonial-slider">
+                <div class="testimonial-track" id="testimonialTrack">
+                    <div class="testimonial-card">
+                        <p class="testimonial-quote">
+                            "Fast download, original firmware, and excellent customer service. 
+                            My Huawei P40 Pro is working perfectly now!"
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">👨</div>
+                            <div class="testimonial-info">
+                                <h4>Ahmad Rizki</h4>
+                                <p>Jakarta, Indonesia</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-quote">
+                            "Best firmware service I've ever used. Easy to find the right version 
+                            for my device and download was super fast!"
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">👩</div>
+                            <div class="testimonial-info">
+                                <h4>Siti Nurhaliza</h4>
+                                <p>Bandung, Indonesia</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-quote">
+                            "Reliable service with genuine firmware files. Had an issue and 
+                            support team helped me immediately. Highly recommended!"
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">👨</div>
+                            <div class="testimonial-info">
+                                <h4>Budi Santoso</h4>
+                                <p>Surabaya, Indonesia</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-dots" id="testimonialDots"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section fade-in" id="faq">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <p class="section-subtitle">Find answers to common questions</p>
+            
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>How do I find the right firmware for my device?</span>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Use the search bar to find your device model (e.g., P40 Pro, Mate 40). 
+                        You can also filter by Android version. Make sure to check your device 
+                        code (e.g., ELS-NX9) before downloading.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>Are these firmware files official?</span>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Yes, all firmware files are official releases from Huawei. We do not 
+                        modify or alter any files. They are sourced directly from Huawei's 
+                        official update servers.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>How long does the download take?</span>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Download speed depends on your internet connection. Files are hosted 
+                        on fast servers (Google Drive/Mega) for optimal download speeds. 
+                        Average file size is 4-6 GB.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>Will flashing firmware void my warranty?</span>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Flashing official firmware does not void warranty. However, we recommend 
+                        consulting with authorized service centers if your device is still under 
+                        warranty.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>Do you provide installation support?</span>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Yes! Contact us via WhatsApp for step-by-step installation guidance. 
+                        We also offer remote assistance for firmware installation.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About AOSUNLOCK.ID</h3>
+                <p>
+                    We provide official Huawei and Honor firmware files for all models. 
+                    Your trusted source for device solutions.
+                </p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="#firmware">Browse Firmware</a>
+                <a href="#testimonials">Customer Reviews</a>
+                <a href="#faq">FAQ</a>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p class="contact">📱 WhatsApp: +62 822-3437-0999</p>
+                <p>📧 Email: support@aosunlock.id</p>
+                <div class="social-links">
+                    <a href="https://wa.me/6282234370999" class="social-icon">💬</a>
+                    <a href="#" class="social-icon">📘</a>
+                    <a href="#" class="social-icon">📷</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
             <p><strong>AOSUNLOCK.ID</strong> - Android Online Service</p>
-            <p class="contact">📱 WhatsApp: +62 822-3437-0999</p>
-            <p style="margin-top: 15px; font-size: 0.9em;">© 2025 AOSUNLOCK.ID. All rights reserved.</p>
-        </footer>
+            <p style="margin-top: 10px; font-size: 0.9em;">© 2025 AOSUNLOCK.ID. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Trust Badges -->
+    <div class="trust-badges">
+        <div class="trust-badge">
+            <div class="trust-icon">🔒</div>
+            <div class="trust-text">Secure<br>Download</div>
+        </div>
+        <div class="trust-badge">
+            <div class="trust-icon">✅</div>
+            <div class="trust-text">Verified<br>Files</div>
+        </div>
+        <div class="trust-badge">
+            <div class="trust-icon">⚡</div>
+            <div class="trust-text">Fast<br>Delivery</div>
+        </div>
+        <div class="trust-badge">
+            <div class="trust-icon">💯</div>
+            <div class="trust-text">100%<br>Satisfaction</div>
+        </div>
+        <div class="trust-badge">
+            <div class="trust-icon">🏆</div>
+            <div class="trust-text">Best<br>Support</div>
+        </div>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="mobile-bottom-nav">
+        <div class="mobile-bottom-nav-container">
+            <a href="#hero" class="mobile-nav-item active">
+                <span>🏠</span>
+                <span>Home</span>
+            </a>
+            <a href="#firmware" class="mobile-nav-item">
+                <span>📱</span>
+                <span>Firmware</span>
+            </a>
+            <a href="#services" class="mobile-nav-item">
+                <span>🛠️</span>
+                <span>Services</span>
+            </a>
+            <a href="https://wa.me/6282234370999" class="mobile-nav-item">
+                <span>💬</span>
+                <span>Chat</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- FAB Menu -->
+    <div class="fab-menu">
+        <div class="fab-options" id="fabOptions">
+            <a href="https://wa.me/6282234370999" class="fab-option">
+                <span>💬</span>
+                <span>WhatsApp</span>
+            </a>
+            <a href="https://t.me/aosunlock" class="fab-option">
+                <span>✈️</span>
+                <span>Telegram</span>
+            </a>
+            <a href="mailto:support@aosunlock.id" class="fab-option">
+                <span>📧</span>
+                <span>Email</span>
+            </a>
+            <a href="tel:+6282234370999" class="fab-option">
+                <span>📞</span>
+                <span>Call Us</span>
+            </a>
+        </div>
+        <button class="fab-main" id="fabMain">+</button>
+    </div>
+
+    <!-- Cookie Consent Banner -->
+    <div class="cookie-banner" id="cookieBanner">
+        <div class="cookie-content">
+            <div class="cookie-text">
+                <strong>🍪 We use cookies</strong>
+                <p style="margin-top: 8px; color: #8b949e;">We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.</p>
+            </div>
+            <div class="cookie-buttons">
+                <button class="cookie-btn cookie-accept" onclick="acceptCookies()">Accept All</button>
+                <button class="cookie-btn cookie-decline" onclick="declineCookies()">Decline</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Newsletter Popup -->
+    <div class="newsletter-overlay" id="newsletterOverlay" onclick="closeNewsletter()"></div>
+    <div class="newsletter-popup" id="newsletterPopup">
+        <button class="newsletter-close" onclick="closeNewsletter()">×</button>
+        <div class="newsletter-icon">📬</div>
+        <h2 class="newsletter-title">Stay Updated!</h2>
+        <p class="newsletter-subtitle">Get latest firmware releases & exclusive deals</p>
+        <form class="newsletter-form" onsubmit="submitNewsletter(event)">
+            <input type="text" class="newsletter-input" placeholder="Your Name" required>
+            <input type="email" class="newsletter-input" placeholder="Your Email" required>
+            <input type="tel" class="newsletter-input" placeholder="WhatsApp Number" required>
+            <button type="submit" class="newsletter-submit">Subscribe Now</button>
+        </form>
     </div>
 
     <script>
+        // Loading Screen
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('loadingScreen').classList.add('hidden');
+            }, 1500);
+        });
+
+        // Hamburger Menu Toggle
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        hamburger.addEventListener('click', function() {
+            this.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.mobile-menu a').forEach(link => {
+            link.addEventListener('click', function() {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+            });
+        });
+
+        // Mobile Bottom Nav Active State
+        document.querySelectorAll('.mobile-nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (this.getAttribute('href').startsWith('#')) {
+                    document.querySelectorAll('.mobile-nav-item').forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
+                }
+            });
+        });
+
+        // FAB Menu Toggle
+        const fabMain = document.getElementById('fabMain');
+        const fabOptions = document.getElementById('fabOptions');
+        
+        fabMain.addEventListener('click', function() {
+            this.classList.toggle('active');
+            fabOptions.classList.toggle('visible');
+        });
+
+        // Cookie Banner
+        function acceptCookies() {
+            localStorage.setItem('cookiesAccepted', 'true');
+            document.getElementById('cookieBanner').classList.remove('visible');
+        }
+
+        function declineCookies() {
+            localStorage.setItem('cookiesAccepted', 'false');
+            document.getElementById('cookieBanner').classList.remove('visible');
+        }
+
+        // Show cookie banner if not accepted
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                if (!localStorage.getItem('cookiesAccepted')) {
+                    document.getElementById('cookieBanner').classList.add('visible');
+                }
+            }, 2000);
+        });
+
+        // Newsletter Popup
+        function closeNewsletter() {
+            document.getElementById('newsletterPopup').classList.remove('visible');
+            document.getElementById('newsletterOverlay').classList.remove('visible');
+            localStorage.setItem('newsletterShown', 'true');
+        }
+
+        function submitNewsletter(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const phone = formData.get('phone');
+            
+            // Send to WhatsApp
+            const message = encodeURIComponent(`Newsletter Subscription:\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}`);
+            window.open(`https://wa.me/6282234370999?text=${message}`, '_blank');
+            
+            closeNewsletter();
+            alert('Thank you for subscribing! 🎉');
+        }
+
+        // Show newsletter popup after 10 seconds
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                if (!localStorage.getItem('newsletterShown')) {
+                    document.getElementById('newsletterPopup').classList.add('visible');
+                    document.getElementById('newsletterOverlay').classList.add('visible');
+                }
+            }, 10000);
+        });
+
+        // Navbar visibility on scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            const backToTop = document.getElementById('backToTop');
+            
+            if (window.scrollY > 100) {
+                navbar.classList.add('visible');
+                backToTop.classList.add('visible');
+            } else {
+                navbar.classList.remove('visible');
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        // Smooth scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(element => {
+            observer.observe(element);
+        });
+
+        // Back to top function
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Stats counter animation
+        function animateCounter(element) {
+            const target = parseInt(element.getAttribute('data-target'));
+            const duration = 2000;
+            const step = target / (duration / 16);
+            let current = 0;
+
+            const timer = setInterval(() => {
+                current += step;
+                if (current >= target) {
+                    element.textContent = target + '+';
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current);
+                }
+            }, 16);
+        }
+
+        // Trigger counter animation when stats section is visible
+        const statsObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    document.querySelectorAll('.stat-number').forEach(animateCounter);
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        const statsSection = document.querySelector('.stats-section');
+        if (statsSection) {
+            statsObserver.observe(statsSection);
+        }
+
+        // Testimonial slider
+        let currentTestimonial = 0;
+        const testimonials = document.querySelectorAll('.testimonial-card');
+        const testimonialTrack = document.getElementById('testimonialTrack');
+        const dotsContainer = document.getElementById('testimonialDots');
+
+        // Create dots
+        testimonials.forEach((_, index) => {
+            const dot = document.createElement('div');
+            dot.className = 'dot';
+            if (index === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => showTestimonial(index));
+            dotsContainer.appendChild(dot);
+        });
+
+        function showTestimonial(index) {
+            currentTestimonial = index;
+            testimonialTrack.style.transform = `translateX(-${index * 100}%)`;
+            
+            document.querySelectorAll('.dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        }
+
+        // Auto-rotate testimonials
+        setInterval(() => {
+            currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+            showTestimonial(currentTestimonial);
+        }, 5000);
+
+        // FAQ toggle
+        function toggleFAQ(element) {
+            const faqItem = element.parentElement;
+            const wasActive = faqItem.classList.contains('active');
+            
+            // Close all FAQ items
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Open clicked item if it wasn't active
+            if (!wasActive) {
+                faqItem.classList.add('active');
+            }
+        }
+
+        // Firmware data and functionality
         const firmwareData = [
             {
                 model: "Huawei P40 Pro",
@@ -315,9 +3160,13 @@
                 emui: "11.0.0",
                 build: "11.0.0.130",
                 size: "5.2 GB",
+                sizeValue: 5.2,
                 date: "2023-10-15",
                 region: "Global",
-                downloadUrl: "#"
+                downloadUrl: "#",
+                category: "otg",
+                chipset: "kirin990",
+                md5: "a3f5d8c9e7b2f1a4d6e8c2b5f7a9d1c3"
             },
             {
                 model: "Huawei Mate 40 Pro",
@@ -326,9 +3175,13 @@
                 emui: "11.0.0",
                 build: "11.0.0.165",
                 size: "5.8 GB",
+                sizeValue: 5.8,
                 date: "2023-09-20",
                 region: "China",
-                downloadUrl: "#"
+                downloadUrl: "#",
+                category: "kirin9000",
+                chipset: "kirin9000",
+                md5: "b4e6f9d1c8a3b2e5f7d9a1c4b6e8f2d5"
             },
             {
                 model: "Huawei P30 Pro",
@@ -337,9 +3190,13 @@
                 emui: "10.1.0",
                 build: "10.1.0.195",
                 size: "4.9 GB",
+                sizeValue: 4.9,
                 date: "2023-08-10",
                 region: "Europe",
-                downloadUrl: "#"
+                downloadUrl: "#",
+                category: "downgrade",
+                chipset: "kirin980",
+                md5: "c5f7a2e9d1b4c6f8a3e5d7b9c1f4a6e8"
             },
             {
                 model: "Huawei Nova 7",
@@ -348,9 +3205,13 @@
                 emui: "10.1.0",
                 build: "10.1.0.140",
                 size: "4.5 GB",
+                sizeValue: 4.5,
                 date: "2023-07-25",
                 region: "Global",
-                downloadUrl: "#"
+                downloadUrl: "#",
+                category: "otg",
+                chipset: "kirin985",
+                md5: "d6a8b3f1c9e2d5a7f9b1c4e6a8d2f5b7"
             },
             {
                 model: "Huawei Y9s",
@@ -359,9 +3220,13 @@
                 emui: "9.1.0",
                 build: "9.1.0.312",
                 size: "3.8 GB",
+                sizeValue: 3.8,
                 date: "2023-06-15",
                 region: "Asia",
-                downloadUrl: "#"
+                downloadUrl: "#",
+                category: "spd",
+                chipset: "kirin710",
+                md5: "e7b9c4f2a1d6e8b3f5c7a9d1e4b6f8c2"
             },
             {
                 model: "Honor 20 Pro",
@@ -370,9 +3235,13 @@
                 emui: "10.1.0",
                 build: "10.1.0.180",
                 size: "4.6 GB",
+                sizeValue: 4.6,
                 date: "2023-05-30",
                 region: "Europe",
-                downloadUrl: "#"
+                downloadUrl: "#",
+                category: "otg",
+                chipset: "kirin980",
+                md5: "f8c1a5d7b2e9f3c6a8d4b7e1c5f9a3d6"
             },
             {
                 model: "Huawei P Smart 2021",
@@ -381,9 +3250,13 @@
                 emui: "10.1.0",
                 build: "10.1.0.155",
                 size: "4.2 GB",
+                sizeValue: 4.2,
                 date: "2023-04-18",
                 region: "Global",
-                downloadUrl: "#"
+                downloadUrl: "#",
+                category: "emergency",
+                chipset: "kirin710",
+                md5: "a9d2b6f3c7e1a5d8b4f6c9e2a7d1b5f8"
             },
             {
                 model: "Huawei Mate 30 Pro",
@@ -392,9 +3265,13 @@
                 emui: "11.0.0",
                 build: "11.0.0.188",
                 size: "5.5 GB",
+                sizeValue: 5.5,
                 date: "2023-03-22",
                 region: "China",
-                downloadUrl: "#"
+                downloadUrl: "#",
+                category: "kirin9000",
+                chipset: "kirin990",
+                md5: "b1e4c7f9a2d6b8f3c5e9a1d7b4f6c8e2"
             },
             {
                 model: "Huawei P40 Lite",
@@ -403,9 +3280,13 @@
                 emui: "10.1.1",
                 build: "10.1.1.200",
                 size: "4.3 GB",
+                sizeValue: 4.3,
                 date: "2023-02-10",
                 region: "Europe",
-                downloadUrl: "#"
+                downloadUrl: "#",
+                category: "downgrade",
+                chipset: "kirin710",
+                md5: "c2f5a8d1b6e9c3f7a4d8b1e5c9f2a6d7"
             },
             {
                 model: "Honor 10 Lite",
@@ -414,9 +3295,13 @@
                 emui: "9.1.0",
                 build: "9.1.0.280",
                 size: "3.5 GB",
+                sizeValue: 3.5,
                 date: "2023-01-15",
                 region: "Global",
-                downloadUrl: "#"
+                downloadUrl: "#",
+                category: "emergency",
+                chipset: "kirin710",
+                md5: "d3a6b9f2c8e1d5a7f3b9c2e6a8d1f4b7"
             },
             {
                 model: "Huawei Nova 8",
@@ -425,9 +3310,13 @@
                 emui: "11.0.0",
                 build: "11.0.0.128",
                 size: "4.8 GB",
+                sizeValue: 4.8,
                 date: "2022-12-20",
                 region: "China",
-                downloadUrl: "#"
+                downloadUrl: "#",
+                category: "otg",
+                chipset: "kirin985",
+                md5: "e4b7c1f9a3d6e8b2f5c9a7d1e3b6f8c4"
             },
             {
                 model: "Huawei Y7a",
@@ -436,15 +3325,24 @@
                 emui: "10.1.0",
                 build: "10.1.0.145",
                 size: "4.0 GB",
+                sizeValue: 4.0,
                 date: "2022-11-08",
                 region: "Asia",
-                downloadUrl: "#"
+                downloadUrl: "#",
+                category: "spd",
+                chipset: "kirin710",
+                md5: "f5c8a2d7b1e9f4c6a8d3b7e2c5f9a1d6"
             }
         ];
 
+        let currentCategory = 'all';
+        let compareList = [];
         let currentFilter = {
             search: '',
-            android: ''
+            android: '',
+            chipsets: [],
+            regions: [],
+            sizes: []
         };
 
         function renderFirmware(data) {
@@ -460,16 +3358,49 @@
             grid.style.display = 'grid';
             noResults.style.display = 'none';
 
-            grid.innerHTML = data.map(fw => `
-                <div class="firmware-card">
+            grid.innerHTML = data.map(fw => {
+                const gradients = [
+                    'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                    'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                    'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+                    'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+                    'linear-gradient(135deg, #30cfd0 0%, #330867 100%)'
+                ];
+                const gradient = gradients[Math.floor(Math.random() * gradients.length)];
+                
+                return `
+                <div class="firmware-card" data-firmware='${JSON.stringify(fw)}'>
+                    <div class="device-image" style="background: ${gradient};">
+                        <div class="device-placeholder">
+                            <div class="phone-frame">
+                                <div class="phone-screen">
+                                    <div class="phone-notch"></div>
+                                    <div class="phone-content">
+                                        <div class="phone-icon">📱</div>
+                                        <div class="phone-brand">Huawei</div>
+                                    </div>
+                                </div>
+                                <div class="phone-button-left"></div>
+                                <div class="phone-button-right"></div>
+                            </div>
+                        </div>
+                        <div class="device-model-badge">${fw.deviceCode}</div>
+                    </div>
                     <div class="firmware-header">
-                        <div class="device-icon">📱</div>
                         <div class="firmware-title">
                             <h3>${fw.model}</h3>
-                            <div class="model">${fw.deviceCode}</div>
+                            <div class="model" style="color: #00b8d4; font-weight: 600;">${fw.category.toUpperCase()}</div>
                         </div>
+                        <input type="checkbox" style="margin-left: auto; cursor: pointer; width: 20px; height: 20px;" 
+                               onchange="toggleCompare(this, '${fw.deviceCode}')" 
+                               title="Add to compare">
                     </div>
                     <div class="firmware-info">
+                        <div class="info-row">
+                            <span class="info-label">Category</span>
+                            <span class="info-value" style="color: #00b8d4; text-transform: uppercase;">${fw.category}</span>
+                        </div>
                         <div class="info-row">
                             <span class="info-label">Android Version</span>
                             <span class="info-value highlight">Android ${fw.android}</span>
@@ -491,21 +3422,72 @@
                             <span class="info-value">${fw.region}</span>
                         </div>
                         <div class="info-row">
-                            <span class="info-label">Release Date</span>
-                            <span class="info-value">${fw.date}</span>
+                            <span class="info-label">MD5 Checksum</span>
+                            <span class="info-value" style="font-size: 0.75em; cursor: pointer;" 
+                                  onclick="copyMD5('${fw.md5}')" 
+                                  title="Click to copy">${fw.md5.substring(0, 16)}...</span>
                         </div>
                     </div>
-                    <button class="download-btn" onclick="downloadFirmware('${fw.model}', '${fw.downloadUrl}')">
-                        <span class="download-icon">⬇</span>
-                        <span>Download Firmware</span>
+                    <button class="download-btn" onclick="contactForFirmware('${fw.model}', '${fw.deviceCode}', '${fw.android}', '${fw.emui}', '${fw.size}', '${fw.region}')">
+                        <span class="download-icon">💬</span>
+                        <span>Contact for File</span>
                     </button>
                 </div>
-            `).join('');
+            `}).join('');
+        }
+
+        // Category Switching
+        function switchCategory(category) {
+            currentCategory = category;
+            
+            // Update active tab
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`[data-category="${category}"]`).classList.add('active');
+            
+            filterFirmware();
+        }
+
+        // Filter Functions
+        function applyFilters() {
+            // Get selected chipsets
+            currentFilter.chipsets = Array.from(document.querySelectorAll('input[id^="chipset-"]:checked'))
+                .map(cb => cb.value);
+            
+            // Get selected regions
+            currentFilter.regions = Array.from(document.querySelectorAll('input[id^="region-"]:checked'))
+                .map(cb => cb.value);
+            
+            // Get selected sizes
+            currentFilter.sizes = Array.from(document.querySelectorAll('input[id^="size-"]:checked'))
+                .map(cb => cb.value);
+            
+            filterFirmware();
+        }
+
+        function resetFilters() {
+            // Uncheck all filter checkboxes
+            document.querySelectorAll('.filter-option input[type="checkbox"]').forEach(cb => {
+                cb.checked = false;
+            });
+            
+            currentFilter.chipsets = [];
+            currentFilter.regions = [];
+            currentFilter.sizes = [];
+            
+            filterFirmware();
         }
 
         function filterFirmware() {
             let filtered = firmwareData;
 
+            // Category filter
+            if (currentCategory !== 'all') {
+                filtered = filtered.filter(fw => fw.category === currentCategory);
+            }
+
+            // Search filter
             if (currentFilter.search) {
                 const search = currentFilter.search.toLowerCase();
                 filtered = filtered.filter(fw => 
@@ -516,15 +3498,178 @@
                 );
             }
 
+            // Android version filter
             if (currentFilter.android) {
                 filtered = filtered.filter(fw => fw.android === currentFilter.android);
+            }
+
+            // Chipset filter
+            if (currentFilter.chipsets.length > 0) {
+                filtered = filtered.filter(fw => currentFilter.chipsets.includes(fw.chipset));
+            }
+
+            // Region filter
+            if (currentFilter.regions.length > 0) {
+                filtered = filtered.filter(fw => currentFilter.regions.includes(fw.region));
+            }
+
+            // Size filter
+            if (currentFilter.sizes.length > 0) {
+                filtered = filtered.filter(fw => {
+                    if (currentFilter.sizes.includes('small') && fw.sizeValue < 4) return true;
+                    if (currentFilter.sizes.includes('medium') && fw.sizeValue >= 4 && fw.sizeValue <= 5) return true;
+                    if (currentFilter.sizes.includes('large') && fw.sizeValue > 5) return true;
+                    return false;
+                });
             }
 
             renderFirmware(filtered);
         }
 
-        function downloadFirmware(model, url) {
-            alert(`Download link for ${model}\n\nNote: Replace this with actual download logic or redirect to download page.\n\nURL: ${url}`);
+        // Compare Functions
+        function toggleCompare(checkbox, deviceCode) {
+            if (checkbox.checked) {
+                const fw = firmwareData.find(f => f.deviceCode === deviceCode);
+                if (fw && compareList.length < 3) {
+                    compareList.push(fw);
+                    updateCompareBar();
+                } else if (compareList.length >= 3) {
+                    checkbox.checked = false;
+                    alert('Maximum 3 firmware can be compared at once');
+                }
+            } else {
+                compareList = compareList.filter(f => f.deviceCode !== deviceCode);
+                updateCompareBar();
+            }
+        }
+
+        function updateCompareBar() {
+            const compareBar = document.getElementById('compareBar');
+            const compareItems = document.getElementById('compareItems');
+            
+            if (compareList.length > 0) {
+                compareBar.classList.add('visible');
+                compareItems.innerHTML = compareList.map(fw => `
+                    <div class="compare-item">
+                        <span>${fw.model}</span>
+                        <button class="compare-remove" onclick="removeFromCompare('${fw.deviceCode}')">×</button>
+                    </div>
+                `).join('');
+            } else {
+                compareBar.classList.remove('visible');
+            }
+        }
+
+        function removeFromCompare(deviceCode) {
+            compareList = compareList.filter(f => f.deviceCode !== deviceCode);
+            // Uncheck the checkbox
+            document.querySelectorAll('.firmware-card').forEach(card => {
+                const data = JSON.parse(card.getAttribute('data-firmware'));
+                if (data.deviceCode === deviceCode) {
+                    card.querySelector('input[type="checkbox"]').checked = false;
+                }
+            });
+            updateCompareBar();
+        }
+
+        function clearCompare() {
+            compareList = [];
+            document.querySelectorAll('.firmware-card input[type="checkbox"]').forEach(cb => {
+                cb.checked = false;
+            });
+            updateCompareBar();
+        }
+
+        function showCompareModal() {
+            if (compareList.length < 2) {
+                alert('Please select at least 2 firmware to compare');
+                return;
+            }
+            
+            const modal = document.getElementById('compareModal');
+            const container = document.getElementById('compareTableContainer');
+            
+            const specs = ['Model', 'Device Code', 'Android', 'EMUI', 'Build', 'Size', 'Region', 'Date', 'Category', 'Chipset', 'MD5'];
+            
+            let tableHTML = '<table class="compare-table"><thead><tr><th>Specification</th>';
+            compareList.forEach(fw => {
+                tableHTML += `<th>${fw.model}</th>`;
+            });
+            tableHTML += '</tr></thead><tbody>';
+            
+            specs.forEach(spec => {
+                tableHTML += `<tr><td><strong>${spec}</strong></td>`;
+                compareList.forEach(fw => {
+                    let value = '';
+                    switch(spec) {
+                        case 'Model': value = fw.model; break;
+                        case 'Device Code': value = fw.deviceCode; break;
+                        case 'Android': value = 'Android ' + fw.android; break;
+                        case 'EMUI': value = fw.emui; break;
+                        case 'Build': value = fw.build; break;
+                        case 'Size': value = fw.size; break;
+                        case 'Region': value = fw.region; break;
+                        case 'Date': value = fw.date; break;
+                        case 'Category': value = fw.category.toUpperCase(); break;
+                        case 'Chipset': value = fw.chipset; break;
+                        case 'MD5': value = `<span style="font-size: 0.8em; word-break: break-all;">${fw.md5}</span>`; break;
+                    }
+                    tableHTML += `<td>${value}</td>`;
+                });
+                tableHTML += '</tr>';
+            });
+            
+            tableHTML += '</tbody></table>';
+            container.innerHTML = tableHTML;
+            modal.classList.add('visible');
+        }
+
+        function closeCompareModal() {
+            document.getElementById('compareModal').classList.remove('visible');
+        }
+
+        // MD5 Copy Function
+        function copyMD5(md5) {
+            navigator.clipboard.writeText(md5).then(() => {
+                alert('MD5 checksum copied to clipboard!\n\n' + md5);
+            });
+        }
+
+        function contactForFirmware(model, deviceCode, android, emui, size, region) {
+            const message = encodeURIComponent(
+                `Hi Admin AOSUNLOCK.ID,\n\n` +
+                `Saya tertarik dengan firmware:\n\n` +
+                `📱 Device: ${model}\n` +
+                `🔢 Code: ${deviceCode}\n` +
+                `🤖 Android: ${android}\n` +
+                `📦 EMUI: ${emui}\n` +
+                `💾 Size: ${size}\n` +
+                `🌍 Region: ${region}\n\n` +
+                `Mohon info harga dan cara pembayaran.\n\n` +
+                `Terima kasih! 🙏`
+            );
+            window.open(`https://wa.me/6282234370999?text=${message}`, '_blank');
+        }
+
+        function contactForFirmware(model, deviceCode, android, emui, size, region) {
+            const message = encodeURIComponent(
+                `Hi Admin AOSUNLOCK.ID,\n\n` +
+                `Saya tertarik dengan firmware:\n\n` +
+                `📱 Device: ${model}\n` +
+                `🔢 Code: ${deviceCode}\n` +
+                `🤖 Android: ${android}\n` +
+                `📦 EMUI: ${emui}\n` +
+                `💾 Size: ${size}\n` +
+                `🌍 Region: ${region}\n\n` +
+                `Mohon info harga dan cara pembayaran.\n\n` +
+                `Terima kasih! 🙏`
+            );
+            window.open(`https://wa.me/6282234370999?text=${message}`, '_blank');
+        }
+
+        function contactService(serviceName) {
+            const message = encodeURIComponent(`Hi, saya tertarik dengan layanan: ${serviceName}\n\nMohon informasi lebih lanjut.`);
+            window.open(`https://wa.me/6282234370999?text=${message}`, '_blank');
         }
 
         document.getElementById('searchInput').addEventListener('input', (e) => {
@@ -535,6 +3680,16 @@
         document.getElementById('androidFilter').addEventListener('change', (e) => {
             currentFilter.android = e.target.value;
             filterFirmware();
+        });
+
+        // Hide loading screen after page loads
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const loadingScreen = document.getElementById('loadingScreen');
+                if (loadingScreen) {
+                    loadingScreen.classList.add('hidden');
+                }
+            }, 1500);
         });
 
         // Initial render
