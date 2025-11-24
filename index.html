@@ -2187,6 +2187,11 @@
                 height: 150px;
             }
 
+            /* Disable shimmer animation on mobile for performance */
+            .device-image::before {
+                animation: none;
+            }
+
             .device-placeholder {
                 font-size: 3.5em;
             }
@@ -3358,7 +3363,7 @@
             grid.style.display = 'grid';
             noResults.style.display = 'none';
 
-            grid.innerHTML = data.map(fw => {
+            grid.innerHTML = data.map((fw, index) => {
                 const gradients = [
                     'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                     'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
@@ -3367,24 +3372,30 @@
                     'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
                     'linear-gradient(135deg, #30cfd0 0%, #330867 100%)'
                 ];
-                const gradient = gradients[Math.floor(Math.random() * gradients.length)];
+                const gradient = gradients[index % gradients.length];
+                
+                // Simple mockup for mobile
+                const isMobile = window.innerWidth <= 768;
+                const phoneMockup = isMobile ? 
+                    `<div class="phone-icon" style="font-size: 3em; opacity: 0.7;">📱</div>` :
+                    `<div class="device-placeholder">
+                        <div class="phone-frame">
+                            <div class="phone-screen">
+                                <div class="phone-notch"></div>
+                                <div class="phone-content">
+                                    <div class="phone-icon">📱</div>
+                                    <div class="phone-brand">Huawei</div>
+                                </div>
+                            </div>
+                            <div class="phone-button-left"></div>
+                            <div class="phone-button-right"></div>
+                        </div>
+                    </div>`;
                 
                 return `
                 <div class="firmware-card" data-firmware='${JSON.stringify(fw)}'>
                     <div class="device-image" style="background: ${gradient};">
-                        <div class="device-placeholder">
-                            <div class="phone-frame">
-                                <div class="phone-screen">
-                                    <div class="phone-notch"></div>
-                                    <div class="phone-content">
-                                        <div class="phone-icon">📱</div>
-                                        <div class="phone-brand">Huawei</div>
-                                    </div>
-                                </div>
-                                <div class="phone-button-left"></div>
-                                <div class="phone-button-right"></div>
-                            </div>
-                        </div>
+                        ${phoneMockup}
                         <div class="device-model-badge">${fw.deviceCode}</div>
                     </div>
                     <div class="firmware-header">
