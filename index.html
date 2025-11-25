@@ -707,6 +707,21 @@
         /* ───────────────────────────── FIRMWARE */
         .firmware { background: linear-gradient(180deg, #0a0a0c, #000); }
         [data-theme="light"] .firmware { background: linear-gradient(180deg, #f5f5f7, #fff); }
+        
+        /* ───────────────────────────── REMOTE SERVICE */
+        .remote-service { 
+            background: linear-gradient(180deg, #000, #0a0a0c); 
+            border-top: 1px solid var(--border);
+        }
+        [data-theme="light"] .remote-service { background: linear-gradient(180deg, #fff, #f5f5f7); }
+        .remote-service .section-label { color: #f97316; }
+        .rs-no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--muted);
+        }
+        .rs-no-results h3 { margin-bottom: 8px; color: var(--text); }
+        
         .firmware-header {
             display: flex;
             flex-wrap: wrap;
@@ -1237,6 +1252,7 @@
             <a href="#stats">Stats</a>
             <a href="#services">Services</a>
             <a href="#firmware">Firmware</a>
+            <a href="#remote-service">Remote</a>
             <a href="#why">Why Us</a>
             <a href="#testimonials">Reviews</a>
             <a href="#faq">FAQ</a>
@@ -1258,6 +1274,7 @@
     <a href="#stats" onclick="closeMobileMenu()">Stats</a>
     <a href="#services" onclick="closeMobileMenu()">Services</a>
     <a href="#firmware" onclick="closeMobileMenu()">Firmware</a>
+    <a href="#remote-service" onclick="closeMobileMenu()">Remote Service</a>
     <a href="#why" onclick="closeMobileMenu()">Why Us</a>
     <a href="#testimonials" onclick="closeMobileMenu()">Reviews</a>
     <a href="#faq" onclick="closeMobileMenu()">FAQ</a>
@@ -1423,6 +1440,79 @@
     </div>
 </section>
 
+<!-- FIRMWARE -->
+<section class="firmware" id="firmware">
+    <div class="section-inner">
+        <div class="firmware-header">
+            <div>
+                <p class="section-label">Firmware Library</p>
+                <h2 class="section-title">Download Files & Solutions</h2>
+                <p class="section-subtitle">Official firmware, solutions & fix files for Huawei/Honor devices.</p>
+            </div>
+            <div class="firmware-search">
+                <input type="text" id="fwSearch" placeholder="Search device...">
+                <select id="fwChipFilter">
+                    <option value="all">All Chipsets</option>
+                    <option value="kirin-710">Kirin 710</option>
+                    <option value="kirin-810">Kirin 810</option>
+                    <option value="kirin-820">Kirin 820</option>
+                    <option value="kirin-985">Kirin 985</option>
+                    <option value="kirin-990">Kirin 990</option>
+                    <option value="kirin-990-5g">Kirin 990 5G</option>
+                    <option value="kirin-9000">Kirin 9000</option>
+                    <option value="kirin-9000e">Kirin 9000E</option>
+                    <option value="qualcomm">Qualcomm</option>
+                    <option value="spd-t610">SPD T610</option>
+                </select>
+                <select id="fwCategoryFilter">
+                    <option value="all">All Categories</option>
+                    <option value="solution-id">🔓 Solution Removed ID</option>
+                    <option value="otg">📂 OTG Files</option>
+                    <option value="downgrade">⬇️ Downgrade</option>
+                    <option value="fix-reboot">🔄 Fix Reboot</option>
+                    <option value="hang-logo">📱 Fix Hang Logo</option>
+                    <option value="firmware">💾 Stock Firmware</option>
+                </select>
+            </div>
+        </div>
+        <div class="firmware-grid" id="firmwareGrid">
+            <!-- Cards rendered by JS -->
+        </div>
+        <div class="fw-no-results" id="fwNoResults" style="display:none;">
+            <h3>No firmware found</h3>
+            <p>Try a different search term or filter.</p>
+        </div>
+    </div>
+</section>
+
+<!-- REMOTE SERVICE -->
+<section class="remote-service" id="remote-service">
+    <div class="section-inner">
+        <div class="firmware-header">
+            <div>
+                <p class="section-label">⚡ Instant Remote Service</p>
+                <h2 class="section-title">Qualcomm Remote Solutions</h2>
+                <p class="section-subtitle">Fast & secure remote service for Qualcomm-based Huawei/Honor devices.</p>
+            </div>
+            <div class="firmware-search">
+                <input type="text" id="rsSearch" placeholder="Search device...">
+                <select id="rsCategoryFilter">
+                    <option value="all">All Services</option>
+                    <option value="removed-id">🔓 Removed ID</option>
+                    <option value="repair-chip">🔧 Repair Chip Damage</option>
+                </select>
+            </div>
+        </div>
+        <div class="firmware-grid" id="remoteServiceGrid">
+            <!-- Cards rendered by JS -->
+        </div>
+        <div class="rs-no-results" id="rsNoResults" style="display:none;">
+            <h3>No device found</h3>
+            <p>Try a different search term.</p>
+        </div>
+    </div>
+</section>
+
 <!-- WHY US -->
 <section class="why" id="why">
     <div class="section-inner">
@@ -1558,51 +1648,6 @@
                 <div class="faq-q">Do you offer refunds?</div>
                 <div class="faq-a">If we cannot complete the service, you receive a full refund. No questions asked.</div>
             </div>
-        </div>
-    </div>
-</section>
-
-<!-- FIRMWARE -->
-<section class="firmware" id="firmware">
-    <div class="section-inner">
-        <div class="firmware-header">
-            <div>
-                <p class="section-label">Firmware Library</p>
-                <h2 class="section-title">Download Files & Solutions</h2>
-                <p class="section-subtitle">Official firmware, solutions & fix files for Huawei/Honor devices.</p>
-            </div>
-            <div class="firmware-search">
-                <input type="text" id="fwSearch" placeholder="Search device...">
-                <select id="fwChipFilter">
-                    <option value="all">All Chipsets</option>
-                    <option value="kirin-710">Kirin 710</option>
-                    <option value="kirin-810">Kirin 810</option>
-                    <option value="kirin-820">Kirin 820</option>
-                    <option value="kirin-985">Kirin 985</option>
-                    <option value="kirin-990">Kirin 990</option>
-                    <option value="kirin-990-5g">Kirin 990 5G</option>
-                    <option value="kirin-9000">Kirin 9000</option>
-                    <option value="kirin-9000e">Kirin 9000E</option>
-                    <option value="qualcomm">Qualcomm</option>
-                    <option value="spd-t610">SPD T610</option>
-                </select>
-                <select id="fwCategoryFilter">
-                    <option value="all">All Categories</option>
-                    <option value="solution-id">🔓 Solution Removed ID</option>
-                    <option value="otg">📂 OTG Files</option>
-                    <option value="downgrade">⬇️ Downgrade</option>
-                    <option value="fix-reboot">🔄 Fix Reboot</option>
-                    <option value="hang-logo">📱 Fix Hang Logo</option>
-                    <option value="firmware">💾 Stock Firmware</option>
-                </select>
-            </div>
-        </div>
-        <div class="firmware-grid" id="firmwareGrid">
-            <!-- Cards rendered by JS -->
-        </div>
-        <div class="fw-no-results" id="fwNoResults" style="display:none;">
-            <h3>No firmware found</h3>
-            <p>Try a different search term or filter.</p>
         </div>
     </div>
 </section>
@@ -1891,20 +1936,110 @@ const categoryLabels = {
 // WhatsApp number
 const waNumber = '6282234370999';
 
-// Firmware Data - Catalog
+// ═══════════════════ FIRMWARE DATA ═══════════════════
 const firmwareData = [
-    // ═══════════════════ KIRIN 9000 ═══════════════════
+    // KIRIN 9000 - SOLUTION ID
     { device: "Huawei P50 Pro", code: "JAD", chipset: "kirin-9000", category: "solution-id" },
     { device: "Huawei Mate 40 Pro", code: "NOH", chipset: "kirin-9000", category: "solution-id" },
     { device: "Huawei Mate 40 RS Porsche", code: "NOP", chipset: "kirin-9000", category: "solution-id" },
     { device: "Huawei Mate X2", code: "TET-AN00", chipset: "kirin-9000", category: "solution-id" },
     { device: "Huawei MatePad Pro 12.6", code: "WGR-W09/W19/AN19", chipset: "kirin-9000", category: "solution-id" },
     
-    // ═══════════════════ KIRIN 9000E ═══════════════════
+    // KIRIN 9000E - SOLUTION ID
     { device: "Huawei Mate 40", code: "OCE-AL50", chipset: "kirin-9000e", category: "solution-id" },
     { device: "Huawei Mate 40", code: "OCE-AN10", chipset: "kirin-9000e", category: "solution-id" },
     { device: "Huawei Mate 40 (Chip Off)", code: "OCE-AN50", chipset: "kirin-9000e", category: "solution-id" },
     { device: "Huawei TET (Chip Off)", code: "TET-AN50", chipset: "kirin-9000e", category: "solution-id" },
+];
+
+// ═══════════════════ REMOTE SERVICE DATA (QUALCOMM) ═══════════════════
+// Category Labels for Remote Service
+const rsCategoryLabels = {
+    'removed-id': { label: 'Removed ID', icon: '🔓', color: '#f97316' },
+    'repair-chip': { label: 'Repair Chip Damage', icon: '🔧', color: '#ef4444' }
+};
+
+const remoteServiceData = [
+    // ══════════ REMOVED ID ══════════
+    { device: "MatePad SE (EMMC)", code: "AGS5Z-XXX/AGS5-XXX", chip: "QC 680", category: "removed-id" },
+    { device: "MatePad SE (UFS)", code: "AGS5Z-XXX/AGS5-XXX", chip: "QC 680", category: "removed-id" },
+    { device: "Honor X30/X40", code: "ANY/RMO", chip: "QC 695", category: "removed-id" },
+    { device: "Honor X30/X40 (V2)", code: "ANY/RMO", chip: "QC 695", category: "removed-id" },
+    { device: "Honor 80", code: "ANN-AN00", chip: "QC 782", category: "removed-id" },
+    { device: "Huawei P50", code: "ABR-XXX", chip: "QC 888", category: "removed-id" },
+    { device: "Huawei P50E", code: "ABR-XXX", chip: "QC 778", category: "removed-id" },
+    { device: "Huawei Mate X3", code: "ALT-AL00", chip: "QC 8+ Gen1", category: "removed-id" },
+    { device: "Huawei Mate X3", code: "ALT-LXX", chip: "QC 8+ Gen1", category: "removed-id" },
+    { device: "TDTech 50", code: "AVA-PA00", chip: "QC 888", category: "removed-id" },
+    { device: "Huawei P50 Pocket", code: "BAL-XXX", chip: "QC 888", category: "removed-id" },
+    { device: "Huawei P50 Pocket", code: "BAL-AL60", chip: "QC 778", category: "removed-id" },
+    { device: "Nova 10 SE", code: "BNE-AL00/LXX", chip: "QC 680", category: "removed-id" },
+    { device: "MatePad 10.4", code: "BAH4-AL10", chip: "QC 778", category: "removed-id" },
+    { device: "MatePad 11.5", code: "BTK-XXX/BTKZ-XXX", chip: "QC 7 Gen1", category: "removed-id" },
+    { device: "Magic 4 Lite 4G / Honor X9", code: "ANY-LX1", chip: "QC 695", category: "removed-id" },
+    { device: "Huawei Mate 50", code: "CET-XXX", chip: "QC 8+ Gen1", category: "removed-id" },
+    { device: "Huawei Mate 50E", code: "CET-AL60", chip: "QC 778", category: "removed-id" },
+    { device: "Honor X7 4G", code: "CMA-LX1/TFY-LX1", chip: "QC 680", category: "removed-id" },
+    { device: "Enjoy 50 Pro", code: "CTR-AL00", chip: "QC 680", category: "removed-id" },
+    { device: "Huawei Mate 50 Pro/RS", code: "DCO-XXX", chip: "QC 8+ Gen1", category: "removed-id" },
+    { device: "MatePad 11 (SD865)", code: "DBR-XXX", chip: "QC 865", category: "removed-id" },
+    { device: "MatePad 11 (SD870)", code: "DBY-XXX", chip: "QC 870", category: "removed-id" },
+    { device: "MatePad 11 (SD888)", code: "DBY2-XXX", chip: "QC 888", category: "removed-id" },
+    { device: "Honor Magic 3", code: "ELZ-AN00", chip: "QC 888", category: "removed-id" },
+    { device: "Honor Magic 3 Pro/Pro+", code: "ELZ-AN10/AN20", chip: "QC 888", category: "removed-id" },
+    { device: "Honor 70", code: "FNE-XXX", chip: "QC 778", category: "removed-id" },
+    { device: "Nova 11", code: "FOA-XXX", chip: "QC 778", category: "removed-id" },
+    { device: "Honor Magic Pad 13", code: "GDI-W09", chip: "QC 888", category: "removed-id" },
+    { device: "Nova 11 Pro", code: "GOA-XXX", chip: "QC 778", category: "removed-id" },
+    { device: "MatePad Pro 11", code: "GOT-W09/AL09/AL19", chip: "QC 888", category: "removed-id" },
+    { device: "Honor Pad 8", code: "HEY-W09", chip: "QC 680", category: "removed-id" },
+    { device: "MatePad Pro 11 (SD870)", code: "GOT-W29", chip: "QC 870", category: "removed-id" },
+    { device: "Nova 9 SE", code: "JLN-XXX", chip: "QC 680", category: "removed-id" },
+    { device: "Huawei P50 Pro", code: "JAD-XXX", chip: "QC 888", category: "removed-id" },
+    { device: "Huawei P60", code: "LNA-AL00", chip: "QC 8+ Gen1", category: "removed-id" },
+    { device: "Honor 60", code: "LSA-XXX", chip: "QC 778", category: "removed-id" },
+    { device: "Enjoy 60 Pro", code: "MAO-AL00", chip: "QC 680", category: "removed-id" },
+    { device: "Huawei P60 Pro", code: "MNA-AL00", chip: "QC 8+ Gen1", category: "removed-id" },
+    { device: "MatePad Pro 10.8 (SD870)", code: "MRR-XXX", chip: "QC 870", category: "removed-id" },
+    { device: "Honor 50", code: "NTH-XXX", chip: "QC 778", category: "removed-id" },
+    { device: "Nova 9", code: "NAM-XXX", chip: "QC 778", category: "removed-id" },
+    { device: "Nova 10/Pro", code: "NCO-XXX", chip: "QC 778", category: "removed-id" },
+    { device: "Honor 50 Lite", code: "NTN-LXX", chip: "QC 662", category: "removed-id" },
+    { device: "HiNova 10/Pro", code: "NEL-AN00/GON-AN00", chip: "QC 778", category: "removed-id" },
+    { device: "MaiMang 10SE / Enjoy 30E", code: "PCU-AN00/PKP-AN60", chip: "QC 480", category: "removed-id" },
+    { device: "Huawei Mate XS 2", code: "PAL-AL00/LXX", chip: "QC 888", category: "removed-id" },
+    { device: "Nova 9 Pro", code: "RNA-AL00", chip: "QC 778", category: "removed-id" },
+    { device: "Honor 50 Pro / 60 Pro", code: "RNA/TNA-AN00", chip: "QC 778", category: "removed-id" },
+    { device: "HiNova 9/Pro", code: "TINA/KATHY-AN00", chip: "QC 778", category: "removed-id" },
+    { device: "Honor X8 / Changwan 30/40", code: "VNE-XXX", chip: "QC 480+", category: "removed-id" },
+    { device: "Honor Play 40", code: "WDY-AN00", chip: "QC 480+", category: "removed-id" },
+    
+    // ══════════ REPAIR CHIP DAMAGE ══════════
+    { device: "Huawei P50", code: "ABR-X", chip: "Qualcomm", category: "repair-chip" },
+    { device: "Huawei Mate X3", code: "ALT-X", chip: "Qualcomm", category: "repair-chip" },
+    { device: "Huawei P50 Pocket", code: "BAL-X", chip: "Qualcomm", category: "repair-chip" },
+    { device: "Nova 10 SE", code: "BNE-X", chip: "Qualcomm", category: "repair-chip" },
+    { device: "MatePad 11.5", code: "BTK-X", chip: "Qualcomm", category: "repair-chip" },
+    { device: "Huawei Mate 50", code: "CET-X", chip: "Qualcomm", category: "repair-chip" },
+    { device: "Enjoy 50 Pro", code: "CTR-X", chip: "Qualcomm", category: "repair-chip" },
+    { device: "Enjoy 50 Pro (V2)", code: "CTRN-X", chip: "Qualcomm", category: "repair-chip" },
+    { device: "MatePad 11 (SD870)", code: "DBY-X", chip: "Qualcomm", category: "repair-chip" },
+    { device: "Huawei Mate 50 Pro/RS (ALOOP)", code: "DCO-ALOOP", chip: "Qualcomm", category: "repair-chip" },
+    { device: "Huawei Mate 50 Pro/RS", code: "DCO-X", chip: "Qualcomm", category: "repair-chip" },
+    { device: "Nova 11", code: "FOA-X", chip: "Qualcomm", category: "repair-chip" },
+    { device: "Honor Magic Pad 13", code: "GLA-X", chip: "Qualcomm", category: "repair-chip" },
+    { device: "Nova 11 Pro", code: "GOA-X", chip: "Qualcomm", category: "repair-chip" },
+    { device: "Huawei P50 Pro", code: "JAD-X", chip: "Qualcomm", category: "repair-chip" },
+    { device: "Nova 9 SE", code: "JLN-X", chip: "Qualcomm", category: "repair-chip" },
+    { device: "Huawei P60", code: "LNA-X", chip: "Qualcomm", category: "repair-chip" },
+    { device: "Enjoy 60 Pro", code: "MAO-X", chip: "Qualcomm", category: "repair-chip" },
+    { device: "Huawei P60 Pro", code: "MNA-X", chip: "Qualcomm", category: "repair-chip" },
+    { device: "Nova 9", code: "NAM-X", chip: "Qualcomm", category: "repair-chip" },
+    { device: "Nova 10/Pro", code: "NCO-X", chip: "Qualcomm", category: "repair-chip" },
+    { device: "Honor 50", code: "NEN-X", chip: "Qualcomm", category: "repair-chip" },
+    { device: "Huawei Mate XS 2", code: "PAL-X", chip: "Qualcomm", category: "repair-chip" },
+    { device: "Nova 9 Pro", code: "RNA-X", chip: "Qualcomm", category: "repair-chip" },
+    { device: "MatePad Air 11.5", code: "STG-X", chip: "Qualcomm", category: "repair-chip" },
 ];
 
 const grid = document.getElementById('firmwareGrid');
@@ -1968,8 +2103,7 @@ function filterFirmware() {
     
     const filtered = firmwareData.filter(fw => {
         const matchSearch = fw.device.toLowerCase().includes(query) || 
-                           fw.code.toLowerCase().includes(query) || 
-                           fw.fileName.toLowerCase().includes(query);
+                           fw.code.toLowerCase().includes(query);
         const matchChip = chip === 'all' || fw.chipset === chip;
         const matchCategory = category === 'all' || fw.category === category;
         return matchSearch && matchChip && matchCategory;
@@ -1983,6 +2117,81 @@ categoryFilter.addEventListener('change', filterFirmware);
 
 // Initial render
 renderFirmware(firmwareData);
+
+// ═══════════════════ REMOTE SERVICE SECTION ═══════════════════
+const rsGrid = document.getElementById('remoteServiceGrid');
+const rsSearchInput = document.getElementById('rsSearch');
+const rsNoResults = document.getElementById('rsNoResults');
+
+function generateRsWaLink(rs) {
+    const cat = rsCategoryLabels[rs.category] || rsCategoryLabels['removed-id'];
+    const message = encodeURIComponent(
+`Hello AOS, I want to request Remote Service:
+
+📱 Device: ${rs.device} (${rs.code})
+🔧 Chipset: ${rs.chip}
+⚡ Service: ${cat.label}
+
+Please provide pricing and process info. Thank you!`
+    );
+    return `https://wa.me/${waNumber}?text=${message}`;
+}
+
+function renderRemoteService(data) {
+    rsGrid.innerHTML = '';
+    if (data.length === 0) {
+        rsNoResults.style.display = 'block';
+        return;
+    }
+    rsNoResults.style.display = 'none';
+    data.forEach(rs => {
+        const cat = rsCategoryLabels[rs.category] || rsCategoryLabels['removed-id'];
+        const waLink = generateRsWaLink(rs);
+        const card = document.createElement('div');
+        card.className = 'fw-card';
+        card.innerHTML = `
+            <div class="fw-card-category" style="background:${cat.color}20; color:${cat.color}; border: 1px solid ${cat.color}40;">
+                ${cat.icon} ${cat.label}
+            </div>
+            <div class="fw-device-name">${rs.device}</div>
+            <div class="fw-device-code">${rs.code}</div>
+            <div class="fw-chip-tag" style="background:${cat.color}15; border-color:${cat.color}30; color:${cat.color};">${rs.chip}</div>
+            <div class="fw-status">
+                <span class="fw-status-dot"></span>
+                Available
+            </div>
+            <a href="${waLink}" class="fw-download wa-btn" target="_blank">
+                <svg class="wa-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+                Request via WhatsApp
+            </a>
+        `;
+        rsGrid.appendChild(card);
+    });
+}
+
+const rsCategoryFilterEl = document.getElementById('rsCategoryFilter');
+
+function filterRemoteService() {
+    const query = rsSearchInput.value.toLowerCase();
+    const catVal = rsCategoryFilterEl.value;
+    
+    const filtered = remoteServiceData.filter(rs => {
+        const matchSearch = rs.device.toLowerCase().includes(query) || 
+               rs.code.toLowerCase().includes(query) ||
+               rs.chip.toLowerCase().includes(query);
+        const matchCategory = catVal === 'all' || rs.category === catVal;
+        return matchSearch && matchCategory;
+    });
+    renderRemoteService(filtered);
+}
+
+rsSearchInput.addEventListener('input', filterRemoteService);
+rsCategoryFilterEl.addEventListener('change', filterRemoteService);
+
+// Initial render Remote Service
+renderRemoteService(remoteServiceData);
 </script>
 
 <!-- BOTTOM NAV (Mobile) -->
@@ -1996,9 +2205,9 @@ renderFirmware(firmwareData);
             <span class="icon">📱</span>
             Firmware
         </a>
-        <a href="#services">
-            <span class="icon">🔧</span>
-            Services
+        <a href="#remote-service">
+            <span class="icon">⚡</span>
+            Remote
         </a>
         <a href="https://wa.me/6282234370999" target="_blank">
             <span class="icon">💬</span>
