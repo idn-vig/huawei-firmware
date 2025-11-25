@@ -1253,8 +1253,8 @@
             <a href="#services">Services</a>
             <a href="#firmware">Firmware</a>
             <a href="#remote-service">Remote</a>
+            <a href="#rst-service">RST</a>
             <a href="#why">Why Us</a>
-            <a href="#testimonials">Reviews</a>
             <a href="#faq">FAQ</a>
         </div>
         <div style="display:flex;align-items:center;gap:12px;">
@@ -1275,8 +1275,8 @@
     <a href="#services" onclick="closeMobileMenu()">Services</a>
     <a href="#firmware" onclick="closeMobileMenu()">Firmware</a>
     <a href="#remote-service" onclick="closeMobileMenu()">Remote Service</a>
+    <a href="#rst-service" onclick="closeMobileMenu()">RST Service</a>
     <a href="#why" onclick="closeMobileMenu()">Why Us</a>
-    <a href="#testimonials" onclick="closeMobileMenu()">Reviews</a>
     <a href="#faq" onclick="closeMobileMenu()">FAQ</a>
     <a href="https://wa.me/6282234370999" target="_blank">💬 WhatsApp</a>
 </div>
@@ -1456,11 +1456,13 @@
                     <option value="kirin-710">Kirin 710</option>
                     <option value="kirin-810">Kirin 810</option>
                     <option value="kirin-820">Kirin 820</option>
+                    <option value="kirin-980">Kirin 980</option>
                     <option value="kirin-985">Kirin 985</option>
                     <option value="kirin-990">Kirin 990</option>
                     <option value="kirin-990-5g">Kirin 990 5G</option>
                     <option value="kirin-9000">Kirin 9000</option>
                     <option value="kirin-9000e">Kirin 9000E</option>
+                    <option value="kirin-9000s">Kirin 9000S</option>
                     <option value="qualcomm">Qualcomm</option>
                     <option value="spd-t610">SPD T610</option>
                 </select>
@@ -1509,6 +1511,51 @@
         <div class="rs-no-results" id="rsNoResults" style="display:none;">
             <h3>No device found</h3>
             <p>Try a different search term.</p>
+        </div>
+    </div>
+</section>
+
+<!-- RST SERVICE (VIVO/OPPO) -->
+<section class="rst-service" id="rst-service">
+    <div class="section-inner">
+        <div class="firmware-header">
+            <div>
+                <p class="section-label">🔐 RST Removed ID Service</p>
+                <h2 class="section-title">VIVO & OPPO Unlock</h2>
+                <p class="section-subtitle">Professional RST unlock service for VIVO, OPPO & iQOO devices.</p>
+            </div>
+            <div class="firmware-search">
+                <input type="text" id="rstSearch" placeholder="Search device...">
+                <select id="rstBrandFilter">
+                    <option value="all">All Brands</option>
+                    <option value="vivo">VIVO</option>
+                    <option value="oppo">OPPO</option>
+                    <option value="iqoo">iQOO</option>
+                </select>
+                <select id="rstSeriesFilter">
+                    <option value="all">All Series</option>
+                    <option value="x">X Series</option>
+                    <option value="y">Y Series</option>
+                    <option value="s">S Series</option>
+                    <option value="find">Find Series</option>
+                    <option value="reno">Reno Series</option>
+                    <option value="ace">Ace Series</option>
+                    <option value="neo">Neo Series</option>
+                    <option value="k">K Series</option>
+                    <option value="gt">GT Series</option>
+                    <option value="z">Z Series</option>
+                    <option value="q">Q Series</option>
+                    <option value="a">A Series</option>
+                    <option value="fold">Fold/Flip</option>
+                </select>
+            </div>
+        </div>
+        <div class="firmware-grid" id="rstServiceGrid">
+            <!-- Cards rendered by JS -->
+        </div>
+        <div class="rst-no-results" id="rstNoResults" style="display:none;">
+            <h3>No device found</h3>
+            <p>Try a different search term or filter.</p>
         </div>
     </div>
 </section>
@@ -1949,7 +1996,201 @@ const firmwareData = [
     { device: "Huawei Mate 40", code: "OCE-AL50", chipset: "kirin-9000e", category: "solution-id" },
     { device: "Huawei Mate 40", code: "OCE-AN10", chipset: "kirin-9000e", category: "solution-id" },
     { device: "Huawei Mate 40 (Chip Off)", code: "OCE-AN50", chipset: "kirin-9000e", category: "solution-id" },
+    { device: "Huawei Mate 40 (Removed ID)", code: "OCE-AN50", chipset: "kirin-9000e", category: "solution-id" },
     { device: "Huawei TET (Chip Off)", code: "TET-AN50", chipset: "kirin-9000e", category: "solution-id" },
+    { device: "Huawei Mate 40 Pro", code: "LIO-AN00m", chipset: "kirin-9000e", category: "solution-id" },
+    
+    // ══════════ KIRIN 990 5G - DOWNGRADE ══════════
+    { device: "Huawei P40", code: "ANA-AN00", chipset: "kirin-990-5g", category: "downgrade" },
+    { device: "Huawei P40", code: "ANA-TN00", chipset: "kirin-990-5g", category: "downgrade" },
+    { device: "Huawei MatePad Pro", code: "EBG-AN00", chipset: "kirin-990-5g", category: "downgrade" },
+    { device: "Huawei MatePad Pro", code: "EBG-AN10", chipset: "kirin-990-5g", category: "downgrade" },
+    { device: "Huawei MatePad Pro", code: "EBG-TN00", chipset: "kirin-990-5g", category: "downgrade" },
+    { device: "Huawei P40 Pro", code: "ELS-AN00", chipset: "kirin-990-5g", category: "downgrade" },
+    { device: "Huawei P40 Pro", code: "ELS-AN10", chipset: "kirin-990-5g", category: "downgrade" },
+    { device: "Huawei P40 Pro", code: "ELS-TN00", chipset: "kirin-990-5g", category: "downgrade" },
+    { device: "Huawei Mate 40 Pro", code: "LIO-AN00", chipset: "kirin-990-5g", category: "downgrade" },
+    { device: "Huawei Mate 40 Pro", code: "LIO-AN00P", chipset: "kirin-990-5g", category: "downgrade" },
+    { device: "Huawei MatePad Pro 5G", code: "MRX-AN19", chipset: "kirin-990-5g", category: "downgrade" },
+    { device: "Honor 30 Pro+", code: "OXF-AN10", chipset: "kirin-990-5g", category: "downgrade" },
+    { device: "Huawei Mate 40 RS", code: "TAH-AN00m", chipset: "kirin-990-5g", category: "downgrade" },
+    { device: "Huawei Mate 40 Pro+", code: "TAS-AN00", chipset: "kirin-990-5g", category: "downgrade" },
+    
+    // ══════════ KIRIN 990 5G - SOLUTION ID ══════════
+    { device: "Huawei P40 Pro (Removed ID)", code: "ELS-AN00", chipset: "kirin-990-5g", category: "solution-id" },
+    { device: "Huawei P40 Pro (Removed ID)", code: "ELS-AN10", chipset: "kirin-990-5g", category: "solution-id" },
+    { device: "Huawei P40 Pro (Deadboot)", code: "ELS-AN00", chipset: "kirin-990-5g", category: "solution-id" },
+    { device: "Huawei P40 Pro (Deadboot)", code: "ELS-AN10", chipset: "kirin-990-5g", category: "solution-id" },
+    { device: "Huawei Mate 40 Pro (Removed ID)", code: "LIO-AN00", chipset: "kirin-990-5g", category: "solution-id" },
+    { device: "Huawei Mate 40 Pro (Removed ID)", code: "LIO-AN00P", chipset: "kirin-990-5g", category: "solution-id" },
+    { device: "Huawei Mate 40 Pro+ (Removed ID)", code: "TAS-AN00", chipset: "kirin-990-5g", category: "solution-id" },
+    
+    // ══════════ KIRIN 810 - SOLUTION ID ══════════
+    { device: "Huawei Nova 7 SE", code: "AQM-AL10", chipset: "kirin-810", category: "solution-id" },
+    { device: "Huawei MatePad 10.4", code: "BAH3-AL00", chipset: "kirin-810", category: "solution-id" },
+    { device: "Huawei MatePad 10.4", code: "BAH3-W09", chipset: "kirin-810", category: "solution-id" },
+    { device: "Huawei MatePad 10.4", code: "BAH3-W59", chipset: "kirin-810", category: "solution-id" },
+    { device: "Huawei Nova 5i Pro", code: "HLK-AL00", chipset: "kirin-810", category: "solution-id" },
+    { device: "Huawei Nova 5i Pro", code: "HLK-AL00a", chipset: "kirin-810", category: "solution-id" },
+    { device: "Huawei Nova 5i Pro", code: "HLK-AL10", chipset: "kirin-810", category: "solution-id" },
+    { device: "Huawei Nova 6 SE", code: "JNY-AL10", chipset: "kirin-810", category: "solution-id" },
+    { device: "Huawei Nova 8 SE", code: "SEA-AL00", chipset: "kirin-810", category: "solution-id" },
+    { device: "Honor Play 4", code: "SPN-AL00", chipset: "kirin-810", category: "solution-id" },
+    { device: "Honor Play 4", code: "SPN-AL10", chipset: "kirin-810", category: "solution-id" },
+    { device: "Honor 20 Pro", code: "YAL-AL50", chipset: "kirin-810", category: "solution-id" },
+    
+    // ══════════ KIRIN 820 - SOLUTION ID ══════════
+    { device: "Huawei MatePad 10.4 (820)", code: "BAH3-AN10", chipset: "kirin-820", category: "solution-id" },
+    { device: "Honor 30S", code: "CDL-AN50", chipset: "kirin-820", category: "solution-id" },
+    { device: "Honor 30", code: "CDY-AN00", chipset: "kirin-820", category: "solution-id" },
+    { device: "Honor 30", code: "CDY-AN20", chipset: "kirin-820", category: "solution-id" },
+    { device: "Honor 30", code: "CDY-AN90", chipset: "kirin-820", category: "solution-id" },
+    { device: "Honor 30", code: "CDY-AN95", chipset: "kirin-820", category: "solution-id" },
+    { device: "Honor 30", code: "CDY-TN00", chipset: "kirin-820", category: "solution-id" },
+    { device: "Honor 30", code: "CDY-TN20", chipset: "kirin-820", category: "solution-id" },
+    { device: "Honor 30", code: "CDY-TN90", chipset: "kirin-820", category: "solution-id" },
+    { device: "Honor 30", code: "CDY-TN95", chipset: "kirin-820", category: "solution-id" },
+    { device: "Honor X10", code: "TEL-AN00", chipset: "kirin-820", category: "solution-id" },
+    { device: "Honor X10 (Removed ID)", code: "TEL-AN00a", chipset: "kirin-820", category: "solution-id" },
+    { device: "Honor X10", code: "TEL-AN10", chipset: "kirin-820", category: "solution-id" },
+    { device: "Honor X10", code: "TEL-TN00", chipset: "kirin-820", category: "solution-id" },
+    { device: "Honor X10", code: "TEL-TN10", chipset: "kirin-820", category: "solution-id" },
+    
+    // ══════════ KIRIN 985 - SOLUTION ID ══════════
+    { device: "Huawei Nova 7 Pro", code: "ANG-AN00", chipset: "kirin-985", category: "solution-id" },
+    { device: "Huawei Nova 8", code: "BMH-AN10", chipset: "kirin-985", category: "solution-id" },
+    { device: "Huawei Nova 8", code: "BMH-AN20", chipset: "kirin-985", category: "solution-id" },
+    { device: "Huawei Nova 8", code: "BMH-TN10", chipset: "kirin-985", category: "solution-id" },
+    { device: "Huawei Nova 9 Pro", code: "BRQ-AL00", chipset: "kirin-985", category: "solution-id" },
+    { device: "Huawei Nova 9 Pro", code: "BRQ-AN00", chipset: "kirin-985", category: "solution-id" },
+    { device: "Huawei Nova 9 Pro", code: "BRQ-AN00CG", chipset: "kirin-985", category: "solution-id" },
+    { device: "Honor 30 Pro", code: "JEF-AN00", chipset: "kirin-985", category: "solution-id" },
+    { device: "Honor 30 Pro", code: "JEF-TN20", chipset: "kirin-985", category: "solution-id" },
+    { device: "Honor 30 Pro+ (Removed ID)", code: "JER-AN10", chipset: "kirin-985", category: "solution-id" },
+    { device: "Honor 30 Pro+ (Removed ID)", code: "JER-AN20", chipset: "kirin-985", category: "solution-id" },
+    { device: "Honor 30 Pro+", code: "JER-TN10", chipset: "kirin-985", category: "solution-id" },
+    { device: "Honor 30 Pro+", code: "JER-TN20", chipset: "kirin-985", category: "solution-id" },
+    { device: "Huawei MatePad 11", code: "KRJ-AN00", chipset: "kirin-985", category: "solution-id" },
+    { device: "Huawei MatePad 11", code: "KRJ-W09", chipset: "kirin-985", category: "solution-id" },
+    
+    // ══════════ KIRIN 990 - SOLUTION ID ══════════
+    { device: "Huawei Mate 40 Pro", code: "LIO-TL00", chipset: "kirin-990", category: "solution-id" },
+    { device: "Huawei MatePad Pro 10.8", code: "MRX-AL09", chipset: "kirin-990", category: "solution-id" },
+    { device: "Huawei MatePad Pro 10.8", code: "MRX-AL19", chipset: "kirin-990", category: "solution-id" },
+    { device: "Huawei MatePad Pro 10.8", code: "MRX-W09", chipset: "kirin-990", category: "solution-id" },
+    { device: "Huawei MatePad Pro 10.8", code: "MRX-W19", chipset: "kirin-990", category: "solution-id" },
+    { device: "Huawei MatePad Pro 10.8", code: "MRX-W29", chipset: "kirin-990", category: "solution-id" },
+    { device: "Huawei MatePad Pro 10.8", code: "MRX-W39", chipset: "kirin-990", category: "solution-id" },
+    { device: "Honor 30 Pro", code: "OXF-AN00", chipset: "kirin-990", category: "solution-id" },
+    { device: "Honor V30 Pro", code: "OXP-AN00L", chipset: "kirin-990", category: "solution-id" },
+    { device: "Honor V30 Pro", code: "OXP-AN10L", chipset: "kirin-990", category: "solution-id" },
+    { device: "Huawei MatePad Pro 10.8", code: "SCMR-AL09", chipset: "kirin-990", category: "solution-id" },
+    { device: "Huawei MatePad Pro 10.8", code: "SCMR-W09", chipset: "kirin-990", category: "solution-id" },
+    { device: "Huawei Mate 40 Pro+ (Removed ID)", code: "TAS-AL00", chipset: "kirin-990", category: "solution-id" },
+    { device: "Huawei Mate 40 Pro+", code: "TAS-TL00", chipset: "kirin-990", category: "solution-id" },
+    { device: "Honor V30 (Removed ID)", code: "WLZ-AL10", chipset: "kirin-990", category: "solution-id" },
+    { device: "Honor V30", code: "WLZ-AN00", chipset: "kirin-990", category: "solution-id" },
+    
+    // ══════════ KIRIN 980 - SOLUTION ID ══════════
+    { device: "Huawei P30 (Removed ID)", code: "ELE-AL00", chipset: "kirin-980", category: "solution-id" },
+    { device: "Huawei P30", code: "ELE-TL00", chipset: "kirin-980", category: "solution-id" },
+    { device: "Huawei Nova 5 Pro", code: "EVR-AL00", chipset: "kirin-980", category: "solution-id" },
+    { device: "Huawei Nova 5 Pro", code: "EVR-TL00", chipset: "kirin-980", category: "solution-id" },
+    { device: "Huawei Mate 20", code: "HMA-AL00", chipset: "kirin-980", category: "solution-id" },
+    { device: "Huawei Mate 20", code: "HMA-TL00", chipset: "kirin-980", category: "solution-id" },
+    { device: "Huawei Mate 20 Pro", code: "LYA-AL00", chipset: "kirin-980", category: "solution-id" },
+    { device: "Huawei Mate 20 Pro", code: "LYA-AL00L", chipset: "kirin-980", category: "solution-id" },
+    { device: "Huawei Mate 20 Pro", code: "LYA-AL00P", chipset: "kirin-980", category: "solution-id" },
+    { device: "Huawei Mate 20 Pro (Removed ID)", code: "LYA-AL10", chipset: "kirin-980", category: "solution-id" },
+    { device: "Huawei Mate 20 Pro", code: "LYA-TL00", chipset: "kirin-980", category: "solution-id" },
+    { device: "Huawei Mate 20 Pro", code: "LYA-TL00L", chipset: "kirin-980", category: "solution-id" },
+    { device: "Huawei MatePad Pro", code: "SCM-AL09", chipset: "kirin-980", category: "solution-id" },
+    { device: "Huawei MatePad Pro", code: "SCM-W09", chipset: "kirin-980", category: "solution-id" },
+    { device: "Huawei Mate 40 RS", code: "TAH-AN00", chipset: "kirin-980", category: "solution-id" },
+    { device: "Huawei Nova 5", code: "TNY-AL10", chipset: "kirin-980", category: "solution-id" },
+    { device: "Huawei P30 Pro (Removed ID)", code: "VOG-AL00", chipset: "kirin-980", category: "solution-id" },
+    { device: "Huawei P30 Pro (Removed ID)", code: "VOG-AL10", chipset: "kirin-980", category: "solution-id" },
+    { device: "Huawei P30 Pro", code: "VOG-TL00", chipset: "kirin-980", category: "solution-id" },
+    { device: "Huawei Nova 5z", code: "VRD-AL09", chipset: "kirin-980", category: "solution-id" },
+    { device: "Huawei Nova 5z", code: "VRD-AL10", chipset: "kirin-980", category: "solution-id" },
+    { device: "Honor 20", code: "YAL-AL10", chipset: "kirin-980", category: "solution-id" },
+    { device: "Honor 20", code: "YAL-TL00", chipset: "kirin-980", category: "solution-id" },
+    
+    // ══════════ KIRIN 710 - SOLUTION ID ══════════
+    { device: "Huawei Enjoy 10 Plus", code: "AKA-AL10", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei Nova 7 SE (710)", code: "AQM-AL00", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei Nova 7 SE (710)", code: "AQM-AL10", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei Nova 7 SE (710)", code: "AQM-TL00", chipset: "kirin-710", category: "solution-id" },
+    { device: "Honor Play 3", code: "ART-AL00", chipset: "kirin-710", category: "solution-id" },
+    { device: "Honor Play 3", code: "ART-AL00m", chipset: "kirin-710", category: "solution-id" },
+    { device: "Honor Play 3", code: "ART-TL00", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei Enjoy 10s", code: "ASK-AL00", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei Enjoy 10s", code: "ASK-AL20", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei Enjoy 10s", code: "ASK-TL00", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei MatePad 10.4 (710)", code: "BAH3-AL00", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei MatePad 10.4 (710)", code: "BAH3-W09", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei MatePad 10.4 (710)", code: "BAH3-W59", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei Nova 6 SE (710)", code: "CHL-AL60", chipset: "kirin-710", category: "solution-id" },
+    { device: "Honor 20 Lite", code: "GLK-AL00", chipset: "kirin-710", category: "solution-id" },
+    { device: "Honor 20 Lite", code: "GLK-TL00", chipset: "kirin-710", category: "solution-id" },
+    { device: "Honor 10 Lite", code: "HRY-AL00", chipset: "kirin-710", category: "solution-id" },
+    { device: "Honor 10 Lite", code: "HRY-AL00a", chipset: "kirin-710", category: "solution-id" },
+    { device: "Honor 10 Lite", code: "HRY-AL00T", chipset: "kirin-710", category: "solution-id" },
+    { device: "Honor 10 Lite", code: "HRY-AL00Ta", chipset: "kirin-710", category: "solution-id" },
+    { device: "Honor 10 Lite", code: "HRY-TL00", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei Nova 3i", code: "INE-AL00", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei Nova 3i", code: "INE-TL00", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei Nova 4", code: "JKM-AL00", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei Nova 4", code: "JKM-AL10", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei Nova 4", code: "JKM-AL20", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei Nova 4", code: "JKM-TL00", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei Nova 8 SE 4G", code: "JSC-AL50", chipset: "kirin-710", category: "solution-id" },
+    { device: "Honor 8X", code: "JSN-AL00", chipset: "kirin-710", category: "solution-id" },
+    { device: "Honor 8X", code: "JSN-AL10", chipset: "kirin-710", category: "solution-id" },
+    { device: "Honor 8X (Removed ID)", code: "JSN-TL00", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei Enjoy 20 SE", code: "LRA-AL00", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei Nova 4e", code: "MAR-AL00", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei Nova 4e", code: "MAR-TL00", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei Enjoy 20", code: "MGA-AL00", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei Nova 3e", code: "POT-AL00", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei Nova 3e", code: "POT-AL00a", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei Nova 3e", code: "POT-AL10C", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei Enjoy 10e", code: "PPA-AL20", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei Enjoy 10e", code: "PPA-TL20", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei Mate 20 Lite", code: "SNE-AL00", chipset: "kirin-710", category: "solution-id" },
+    { device: "Honor Play 4 (710)", code: "SPN-AL00", chipset: "kirin-710", category: "solution-id" },
+    { device: "Honor 9X", code: "STK-AL00", chipset: "kirin-710", category: "solution-id" },
+    { device: "Honor 9X", code: "STK-TL00", chipset: "kirin-710", category: "solution-id" },
+    { device: "Honor 20 (710)", code: "YAL-AL50", chipset: "kirin-710", category: "solution-id" },
+    { device: "Honor 20 Lite (Removed ID)", code: "EVE-LX9", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei Enjoy 20", code: "MGA-AL00", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei Enjoy 20", code: "MGA-AL40", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei Enjoy 20", code: "MGA-LX3", chipset: "kirin-710", category: "solution-id" },
+    { device: "Huawei Enjoy 20", code: "MGA-LX9", chipset: "kirin-710", category: "solution-id" },
+    
+    // ══════════ KIRIN 710 - FIX REBOOT ══════════
+    { device: "Kirin 710 Reboot Fixed", code: "Universal", chipset: "kirin-710", category: "fix-reboot" },
+    { device: "Kirin 710 Dump File Fixed", code: "Universal", chipset: "kirin-710", category: "fix-reboot" },
+    
+    // ══════════ KIRIN 710 - OTG FILES ══════════
+    { device: "OTG Flash Kirin 710", code: "Universal", chipset: "kirin-710", category: "otg" },
+    
+    // ══════════ KIRIN 710 - FIRMWARE ══════════
+    { device: "Kirin 710 Backup Original", code: "Universal", chipset: "kirin-710", category: "firmware" },
+    
+    // ══════════ KIRIN 9000S - OTG FILES ══════════
+    { device: "Huawei Mate X5 (OTG)", code: "Mate X5", chipset: "kirin-9000s", category: "otg" },
+    { device: "Huawei Mate 60 (OTG)", code: "Mate 60", chipset: "kirin-9000s", category: "otg" },
+    { device: "Huawei Mate 60 Pro (OTG)", code: "Mate 60 Pro", chipset: "kirin-9000s", category: "otg" },
+    { device: "OTG Error Fix", code: "Universal", chipset: "kirin-9000s", category: "otg" },
+    
+    // ══════════ KIRIN 9000S - FIX FILES ══════════
+    { device: "Fix Battery Kirin 9000S", code: "Universal", chipset: "kirin-9000s", category: "fix-reboot" },
+    { device: "Room Bypass Menu Set Pass", code: "Universal", chipset: "kirin-9000s", category: "solution-id" },
+    { device: "File Unlock Kirin 9000S", code: "Universal", chipset: "kirin-9000s", category: "solution-id" },
+    
+    // ══════════ OTHER - FIX FILES ══════════
+    { device: "Y61 PayJoy Fixed", code: "Y61", chipset: "other", category: "fix-reboot" },
 ];
 
 // ═══════════════════ REMOTE SERVICE DATA (QUALCOMM) ═══════════════════
@@ -2192,6 +2433,245 @@ rsCategoryFilterEl.addEventListener('change', filterRemoteService);
 
 // Initial render Remote Service
 renderRemoteService(remoteServiceData);
+
+// ═══════════════════ RST SERVICE DATA (VIVO/OPPO) ═══════════════════
+const rstServiceData = [
+    // ══════════ VIVO X SERIES ══════════
+    { device: "VIVO X60", brand: "vivo", series: "x" },
+    { device: "VIVO X60 Pro", brand: "vivo", series: "x" },
+    { device: "VIVO X70", brand: "vivo", series: "x" },
+    { device: "VIVO X70 Pro", brand: "vivo", series: "x" },
+    { device: "VIVO X70 Pro+", brand: "vivo", series: "x" },
+    { device: "VIVO X80", brand: "vivo", series: "x" },
+    { device: "VIVO X80 Pro", brand: "vivo", series: "x" },
+    { device: "VIVO X90", brand: "vivo", series: "x" },
+    { device: "VIVO X90 Pro", brand: "vivo", series: "x" },
+    { device: "VIVO X90 Pro+", brand: "vivo", series: "x" },
+    { device: "VIVO X100", brand: "vivo", series: "x" },
+    { device: "VIVO X100 Pro", brand: "vivo", series: "x" },
+    { device: "VIVO X100S", brand: "vivo", series: "x" },
+    { device: "VIVO X200", brand: "vivo", series: "x" },
+    { device: "VIVO X200 Pro", brand: "vivo", series: "x" },
+    { device: "VIVO X200 Pro Mini", brand: "vivo", series: "x" },
+    { device: "VIVO X Note", brand: "vivo", series: "x" },
+    { device: "VIVO X Flip", brand: "vivo", series: "fold" },
+    { device: "VIVO X Fold", brand: "vivo", series: "fold" },
+    { device: "VIVO X Fold 2", brand: "vivo", series: "fold" },
+    
+    // ══════════ VIVO Y SERIES ══════════
+    { device: "VIVO Y13 Pro", brand: "vivo", series: "y" },
+    { device: "VIVO Y33S", brand: "vivo", series: "y" },
+    { device: "VIVO Y35", brand: "vivo", series: "y" },
+    { device: "VIVO Y35+", brand: "vivo", series: "y" },
+    { device: "VIVO Y36", brand: "vivo", series: "y" },
+    { device: "VIVO Y77", brand: "vivo", series: "y" },
+    { device: "VIVO Y77E", brand: "vivo", series: "y" },
+    { device: "VIVO Y78+", brand: "vivo", series: "y" },
+    { device: "VIVO Y78-T1", brand: "vivo", series: "y" },
+    { device: "VIVO Y78M", brand: "vivo", series: "y" },
+    { device: "VIVO Y78T", brand: "vivo", series: "y" },
+    { device: "VIVO Y100", brand: "vivo", series: "y" },
+    { device: "VIVO Y100i", brand: "vivo", series: "y" },
+    { device: "VIVO Y200", brand: "vivo", series: "y" },
+    { device: "VIVO Y200i", brand: "vivo", series: "y" },
+    { device: "VIVO Y200T", brand: "vivo", series: "y" },
+    
+    // ══════════ VIVO S SERIES ══════════
+    { device: "VIVO S9", brand: "vivo", series: "s" },
+    { device: "VIVO S10", brand: "vivo", series: "s" },
+    { device: "VIVO S10E", brand: "vivo", series: "s" },
+    { device: "VIVO S10 Pro", brand: "vivo", series: "s" },
+    { device: "VIVO S12", brand: "vivo", series: "s" },
+    { device: "VIVO S12 Pro", brand: "vivo", series: "s" },
+    { device: "VIVO S15", brand: "vivo", series: "s" },
+    { device: "VIVO S15E", brand: "vivo", series: "s" },
+    { device: "VIVO S15 Pro", brand: "vivo", series: "s" },
+    { device: "VIVO S16", brand: "vivo", series: "s" },
+    { device: "VIVO S16E", brand: "vivo", series: "s" },
+    { device: "VIVO S16 Pro", brand: "vivo", series: "s" },
+    { device: "VIVO S17", brand: "vivo", series: "s" },
+    { device: "VIVO S17E", brand: "vivo", series: "s" },
+    { device: "VIVO S17 Pro", brand: "vivo", series: "s" },
+    { device: "VIVO S17T", brand: "vivo", series: "s" },
+    { device: "VIVO S18", brand: "vivo", series: "s" },
+    { device: "VIVO S18 Pro", brand: "vivo", series: "s" },
+    { device: "VIVO S19", brand: "vivo", series: "s" },
+    { device: "VIVO S19 Pro", brand: "vivo", series: "s" },
+    { device: "VIVO S20", brand: "vivo", series: "s" },
+    { device: "VIVO S20 Pro", brand: "vivo", series: "s" },
+    
+    // ══════════ iQOO SERIES ══════════
+    { device: "iQOO 3", brand: "iqoo", series: "neo" },
+    { device: "iQOO 5 Pro", brand: "iqoo", series: "neo" },
+    { device: "iQOO 8", brand: "iqoo", series: "neo" },
+    { device: "iQOO 9", brand: "iqoo", series: "neo" },
+    { device: "iQOO 9 Pro", brand: "iqoo", series: "neo" },
+    { device: "iQOO 10", brand: "iqoo", series: "neo" },
+    { device: "iQOO 10 Pro", brand: "iqoo", series: "neo" },
+    { device: "iQOO 11", brand: "iqoo", series: "neo" },
+    { device: "iQOO 11 Pro", brand: "iqoo", series: "neo" },
+    { device: "iQOO 12", brand: "iqoo", series: "neo" },
+    { device: "iQOO 12 Pro", brand: "iqoo", series: "neo" },
+    { device: "iQOO 13", brand: "iqoo", series: "neo" },
+    
+    // ══════════ iQOO NEO SERIES ══════════
+    { device: "iQOO Neo 5", brand: "iqoo", series: "neo" },
+    { device: "iQOO Neo 5S", brand: "iqoo", series: "neo" },
+    { device: "iQOO Neo 5SE", brand: "iqoo", series: "neo" },
+    { device: "iQOO Neo 6", brand: "iqoo", series: "neo" },
+    { device: "iQOO Neo 6SE", brand: "iqoo", series: "neo" },
+    { device: "iQOO Neo 7", brand: "iqoo", series: "neo" },
+    { device: "iQOO Neo 8", brand: "iqoo", series: "neo" },
+    { device: "iQOO Neo 8 Pro", brand: "iqoo", series: "neo" },
+    { device: "iQOO Neo 9", brand: "iqoo", series: "neo" },
+    { device: "iQOO Neo 9 Pro", brand: "iqoo", series: "neo" },
+    { device: "iQOO Neo 10", brand: "iqoo", series: "neo" },
+    
+    // ══════════ iQOO Z SERIES ══════════
+    { device: "iQOO Z7", brand: "iqoo", series: "z" },
+    { device: "iQOO Z7X", brand: "iqoo", series: "z" },
+    { device: "iQOO Z8", brand: "iqoo", series: "z" },
+    { device: "iQOO Z9", brand: "iqoo", series: "z" },
+    { device: "iQOO Z9X", brand: "iqoo", series: "z" },
+    { device: "iQOO Z9 Turbo", brand: "iqoo", series: "z" },
+    { device: "iQOO Z9 Turbo+", brand: "iqoo", series: "z" },
+    
+    // ══════════ iQOO GT SERIES ══════════
+    { device: "iQOO GT Neo 5SE", brand: "iqoo", series: "gt" },
+    { device: "iQOO GT Neo 6", brand: "iqoo", series: "gt" },
+    { device: "iQOO GT 5", brand: "iqoo", series: "gt" },
+    { device: "iQOO GT 5 Pro", brand: "iqoo", series: "gt" },
+    
+    // ══════════ OPPO FIND SERIES ══════════
+    { device: "OPPO Find 2", brand: "oppo", series: "find" },
+    { device: "OPPO Find N", brand: "oppo", series: "find" },
+    { device: "OPPO Find N2 Flip", brand: "oppo", series: "fold" },
+    { device: "OPPO Find N3", brand: "oppo", series: "find" },
+    { device: "OPPO Find N3 Flip", brand: "oppo", series: "fold" },
+    { device: "OPPO Find X5", brand: "oppo", series: "find" },
+    { device: "OPPO Find X Pro", brand: "oppo", series: "find" },
+    { device: "OPPO Find X6", brand: "oppo", series: "find" },
+    { device: "OPPO Find X6 Pro", brand: "oppo", series: "find" },
+    { device: "OPPO Find X7", brand: "oppo", series: "find" },
+    { device: "OPPO Find X7 Ultra", brand: "oppo", series: "find" },
+    { device: "OPPO Find X8", brand: "oppo", series: "find" },
+    
+    // ══════════ OPPO RENO SERIES ══════════
+    { device: "OPPO Reno 7 Pro", brand: "oppo", series: "reno" },
+    { device: "OPPO Reno 8 Pro", brand: "oppo", series: "reno" },
+    { device: "OPPO Reno 9 Pro", brand: "oppo", series: "reno" },
+    { device: "OPPO Reno 9 Pro+", brand: "oppo", series: "reno" },
+    { device: "OPPO Reno 10", brand: "oppo", series: "reno" },
+    { device: "OPPO Reno 10 Pro", brand: "oppo", series: "reno" },
+    { device: "OPPO Reno 10 Pro+", brand: "oppo", series: "reno" },
+    { device: "OPPO Reno 11", brand: "oppo", series: "reno" },
+    { device: "OPPO Reno 11 Pro", brand: "oppo", series: "reno" },
+    { device: "OPPO Reno 12", brand: "oppo", series: "reno" },
+    { device: "OPPO Reno 12 Pro", brand: "oppo", series: "reno" },
+    { device: "OPPO Reno 13", brand: "oppo", series: "reno" },
+    { device: "OPPO Reno 13 Pro", brand: "oppo", series: "reno" },
+    
+    // ══════════ OPPO K SERIES ══════════
+    { device: "OPPO K11", brand: "oppo", series: "k" },
+    { device: "OPPO K12", brand: "oppo", series: "k" },
+    { device: "OPPO K12X", brand: "oppo", series: "k" },
+    
+    // ══════════ OPPO ACE SERIES ══════════
+    { device: "OPPO Ace", brand: "oppo", series: "ace" },
+    { device: "OPPO Ace 2 Pro", brand: "oppo", series: "ace" },
+    { device: "OPPO Ace 2V", brand: "oppo", series: "ace" },
+    { device: "OPPO Ace 3", brand: "oppo", series: "ace" },
+    { device: "OPPO Ace 3V", brand: "oppo", series: "ace" },
+    { device: "OPPO Ace Pro", brand: "oppo", series: "ace" },
+    
+    // ══════════ OPPO A SERIES ══════════
+    { device: "OPPO A1", brand: "oppo", series: "a" },
+    { device: "OPPO A1X", brand: "oppo", series: "a" },
+    { device: "OPPO A2", brand: "oppo", series: "a" },
+    { device: "OPPO A2 Pro", brand: "oppo", series: "a" },
+    { device: "OPPO A2X", brand: "oppo", series: "a" },
+    
+    // ══════════ OPPO Q SERIES ══════════
+    { device: "OPPO Q3", brand: "oppo", series: "q" },
+    { device: "OPPO Q3 Pro", brand: "oppo", series: "q" },
+    { device: "OPPO Q3S", brand: "oppo", series: "q" },
+    { device: "OPPO Q5", brand: "oppo", series: "q" },
+];
+
+// RST Service Elements
+const rstGrid = document.getElementById('rstServiceGrid');
+const rstSearchInput = document.getElementById('rstSearch');
+const rstBrandFilter = document.getElementById('rstBrandFilter');
+const rstSeriesFilter = document.getElementById('rstSeriesFilter');
+const rstNoResults = document.getElementById('rstNoResults');
+
+function generateRstWaLink(rst) {
+    const message = encodeURIComponent(
+`Hello AOS, I want to request RST Service:
+
+📱 Device: ${rst.device}
+🔐 Service: RST Removed ID
+
+Please provide pricing and process info. Thank you!`
+    );
+    return `https://wa.me/${waNumber}?text=${message}`;
+}
+
+function renderRstService(data) {
+    rstGrid.innerHTML = '';
+    if (data.length === 0) {
+        rstNoResults.style.display = 'block';
+        return;
+    }
+    rstNoResults.style.display = 'none';
+    data.forEach(rst => {
+        const waLink = generateRstWaLink(rst);
+        const brandColor = rst.brand === 'vivo' ? '#415fff' : rst.brand === 'oppo' ? '#1ba784' : '#ff6600';
+        const brandLabel = rst.brand.toUpperCase();
+        const card = document.createElement('div');
+        card.className = 'fw-card';
+        card.innerHTML = `
+            <div class="fw-card-category" style="background:${brandColor}20; color:${brandColor}; border: 1px solid ${brandColor}40;">
+                🔐 ${brandLabel}
+            </div>
+            <div class="fw-device-name">${rst.device}</div>
+            <div class="fw-device-code">${rst.series.toUpperCase()} Series</div>
+            <div class="fw-chip-tag" style="background:${brandColor}15; border-color:${brandColor}30; color:${brandColor};">RST Removed ID</div>
+            <div class="fw-status">
+                <span class="fw-status-dot"></span>
+                Available
+            </div>
+            <a href="${waLink}" class="fw-download wa-btn" target="_blank">
+                <svg class="wa-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+                Request via WhatsApp
+            </a>
+        `;
+        rstGrid.appendChild(card);
+    });
+}
+
+function filterRstService() {
+    const query = rstSearchInput.value.toLowerCase();
+    const brandVal = rstBrandFilter.value;
+    const seriesVal = rstSeriesFilter.value;
+    
+    const filtered = rstServiceData.filter(rst => {
+        const matchSearch = rst.device.toLowerCase().includes(query);
+        const matchBrand = brandVal === 'all' || rst.brand === brandVal;
+        const matchSeries = seriesVal === 'all' || rst.series === seriesVal;
+        return matchSearch && matchBrand && matchSeries;
+    });
+    renderRstService(filtered);
+}
+
+rstSearchInput.addEventListener('input', filterRstService);
+rstBrandFilter.addEventListener('change', filterRstService);
+rstSeriesFilter.addEventListener('change', filterRstService);
+
+// Initial render RST Service
+renderRstService(rstServiceData);
 </script>
 
 <!-- BOTTOM NAV (Mobile) -->
