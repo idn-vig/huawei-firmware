@@ -73,6 +73,68 @@
         }
         .nav-cta:hover { opacity: 0.85; }
 
+        /* ───────────────────────────── HAMBURGER MENU */
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5px;
+            width: 28px;
+            height: 28px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            z-index: 101;
+        }
+        .nav-toggle span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: var(--text);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        .nav-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .nav-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .nav-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 52px;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: saturate(180%) blur(20px);
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            z-index: 99;
+        }
+        .mobile-menu.active {
+            display: block;
+        }
+        .mobile-menu a {
+            display: block;
+            color: var(--text);
+            text-decoration: none;
+            padding: 14px 0;
+            font-size: 1rem;
+            border-bottom: 1px solid var(--border);
+            transition: color 0.25s;
+        }
+        .mobile-menu a:last-child {
+            border-bottom: none;
+        }
+        .mobile-menu a:hover {
+            color: var(--accent);
+        }
+
         /* ───────────────────────────── HERO */
         .hero {
             min-height: 100vh;
@@ -594,6 +656,7 @@
         /* ───────────────────────────── RESPONSIVE */
         @media (max-width: 768px) {
             .nav-links { display: none; }
+            .nav-toggle { display: flex; }
             .hero { padding: 120px 20px 60px; min-height: auto; }
             .hero h1 { font-size: 1.8rem; }
             .hero-lead { font-size: 0.95rem; }
@@ -644,9 +707,25 @@
             <a href="#testimonials">Reviews</a>
             <a href="#faq">FAQ</a>
         </div>
-        <a href="https://wa.me/6282234370999" class="nav-cta" target="_blank">Contact</a>
+        <div style="display:flex;align-items:center;gap:12px;">
+            <a href="https://wa.me/6282234370999" class="nav-cta" target="_blank">Contact</a>
+            <button class="nav-toggle" onclick="toggleMobileMenu()" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
     </div>
 </nav>
+<div class="mobile-menu" id="mobileMenu">
+    <a href="#stats" onclick="closeMobileMenu()">Stats</a>
+    <a href="#services" onclick="closeMobileMenu()">Services</a>
+    <a href="#firmware" onclick="closeMobileMenu()">Firmware</a>
+    <a href="#why" onclick="closeMobileMenu()">Why Us</a>
+    <a href="#testimonials" onclick="closeMobileMenu()">Reviews</a>
+    <a href="#faq" onclick="closeMobileMenu()">FAQ</a>
+    <a href="https://wa.me/6282234370999" target="_blank">💬 WhatsApp</a>
+</div>
 
 <!-- HERO -->
 <section class="hero" id="hero">
@@ -943,6 +1022,16 @@
 </div>
 
 <script>
+// Mobile Menu Toggle
+function toggleMobileMenu() {
+    document.querySelector('.nav-toggle').classList.toggle('active');
+    document.getElementById('mobileMenu').classList.toggle('active');
+}
+function closeMobileMenu() {
+    document.querySelector('.nav-toggle').classList.remove('active');
+    document.getElementById('mobileMenu').classList.remove('active');
+}
+
 // FAQ Toggle
 document.querySelectorAll('.faq-q').forEach(q => {
     q.addEventListener('click', () => {
