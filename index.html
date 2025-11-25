@@ -751,69 +751,123 @@
         .fw-card {
             background: var(--card);
             border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 24px;
-            transition: transform 0.3s, border-color 0.3s;
+            border-radius: 20px;
+            padding: 28px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+            position: relative;
         }
         .fw-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(255,255,255,0.15);
+            transform: translateY(-8px);
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(0,113,227,0.15);
         }
-        .fw-card-header {
-            display: flex;
+        .fw-card-category {
+            display: inline-flex;
             align-items: center;
-            gap: 14px;
-            margin-bottom: 18px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border);
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
         }
-        .fw-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, var(--accent), #4da3ff);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
+        .fw-device-name {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            letter-spacing: -0.02em;
         }
-        .fw-title h4 {
-            font-size: 1rem;
-            margin-bottom: 2px;
-        }
-        .fw-title span {
-            font-size: 0.82rem;
+        .fw-device-code {
+            font-size: 0.9rem;
             color: var(--muted);
+            margin-bottom: 16px;
         }
-        .fw-info {
-            display: grid;
-            gap: 10px;
-            margin-bottom: 18px;
+        .fw-chip-tag {
+            display: inline-block;
+            padding: 8px 14px;
+            border-radius: 10px;
+            background: rgba(0,113,227,0.1);
+            border: 1px solid rgba(0,113,227,0.2);
+            color: var(--accent);
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 20px;
         }
-        .fw-row {
+        .fw-status {
             display: flex;
-            justify-content: space-between;
-            font-size: 0.88rem;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.82rem;
+            color: #22c55e;
+            margin-bottom: 20px;
         }
-        .fw-row .label { color: var(--muted); }
-        .fw-row .value { color: var(--text); font-weight: 500; }
-        .fw-row .value.highlight { color: var(--accent); }
+        .fw-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+            animation: pulse-dot 2s infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
         .fw-download {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
             width: 100%;
-            padding: 12px;
-            border-radius: 980px;
+            padding: 14px 20px;
+            border-radius: 14px;
             background: var(--accent);
             color: #fff;
-            font-weight: 500;
-            font-size: 0.92rem;
+            font-weight: 600;
+            font-size: 0.9rem;
             text-decoration: none;
-            transition: opacity 0.25s;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
         .fw-download:hover { opacity: 0.85; }
+        .fw-download.wa-btn {
+            background: linear-gradient(135deg, #25d366 0%, #128c7e 50%, #075e54 100%);
+            box-shadow: 
+                0 4px 15px rgba(37, 211, 102, 0.3),
+                0 0 0 1px rgba(255,255,255,0.1) inset;
+            border: 1px solid rgba(255,255,255,0.15);
+            letter-spacing: 0.3px;
+        }
+        .fw-download.wa-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        .fw-download.wa-btn:hover::before {
+            left: 100%;
+        }
+        .fw-download.wa-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 8px 25px rgba(37, 211, 102, 0.4),
+                0 0 20px rgba(37, 211, 102, 0.2),
+                0 0 0 1px rgba(255,255,255,0.2) inset;
+        }
+        .fw-download.wa-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 10px rgba(37, 211, 102, 0.3);
+        }
+        .fw-download.wa-btn .wa-icon {
+            font-size: 1.1rem;
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
+        }
         .fw-no-results {
             text-align: center;
             padding: 60px 20px;
@@ -1123,6 +1177,8 @@
             .firmware-search input { min-width: 100%; }
             .firmware-filters { width: 100%; }
             .firmware-filters select { width: 100%; }
+            .firmware-search { flex-direction: column; width: 100%; }
+            .firmware-search input, .firmware-search select { width: 100%; min-width: 100%; }
             .footer-grid { grid-template-columns: 1fr; gap: 30px; text-align: center; }
             .footer { padding-bottom: 80px; }
             .marquee { font-size: 0.75rem; }
@@ -1512,16 +1568,32 @@
         <div class="firmware-header">
             <div>
                 <p class="section-label">Firmware Library</p>
-                <h2 class="section-title">Download Official ROMs</h2>
-                <p class="section-subtitle">Verified stock firmware for Huawei & Honor devices.</p>
+                <h2 class="section-title">Download Files & Solutions</h2>
+                <p class="section-subtitle">Official firmware, solutions & fix files for Huawei/Honor devices.</p>
             </div>
             <div class="firmware-search">
-                <input type="text" id="fwSearch" placeholder="Search model or version...">
-                <select id="fwFilter">
+                <input type="text" id="fwSearch" placeholder="Search device...">
+                <select id="fwChipFilter">
                     <option value="all">All Chipsets</option>
-                    <option value="kirin">Kirin (HiSilicon)</option>
-                    <option value="qualcomm">Qualcomm Snapdragon</option>
-                    <option value="spd">SPD (Spreadtrum/Unisoc)</option>
+                    <option value="kirin-710">Kirin 710</option>
+                    <option value="kirin-810">Kirin 810</option>
+                    <option value="kirin-820">Kirin 820</option>
+                    <option value="kirin-985">Kirin 985</option>
+                    <option value="kirin-990">Kirin 990</option>
+                    <option value="kirin-990-5g">Kirin 990 5G</option>
+                    <option value="kirin-9000">Kirin 9000</option>
+                    <option value="kirin-9000e">Kirin 9000E</option>
+                    <option value="qualcomm">Qualcomm</option>
+                    <option value="spd-t610">SPD T610</option>
+                </select>
+                <select id="fwCategoryFilter">
+                    <option value="all">All Categories</option>
+                    <option value="solution-id">🔓 Solution Removed ID</option>
+                    <option value="otg">📂 OTG Files</option>
+                    <option value="downgrade">⬇️ Downgrade</option>
+                    <option value="fix-reboot">🔄 Fix Reboot</option>
+                    <option value="hang-logo">📱 Fix Hang Logo</option>
+                    <option value="firmware">💾 Stock Firmware</option>
                 </select>
             </div>
         </div>
@@ -1806,15 +1878,54 @@ document.querySelectorAll('.faq-q').forEach(q => {
     });
 });
 
-// Firmware Data - Kosong, siap diisi sesuai arahan
+// Category labels & icons
+const categoryLabels = {
+    'solution-id': { label: 'Solution Removed ID', icon: '🔓', color: '#ff6b6b' },
+    'otg': { label: 'OTG File', icon: '📂', color: '#4ecdc4' },
+    'downgrade': { label: 'Downgrade', icon: '⬇️', color: '#a855f7' },
+    'fix-reboot': { label: 'Fix Reboot', icon: '🔄', color: '#f59e0b' },
+    'hang-logo': { label: 'Fix Hang Logo', icon: '📱', color: '#3b82f6' },
+    'firmware': { label: 'Stock Firmware', icon: '💾', color: '#22c55e' }
+};
+
+// WhatsApp number
+const waNumber = '6282234370999';
+
+// Firmware Data - Catalog
 const firmwareData = [
-    // DATA FIRMWARE AKAN DITAMBAHKAN DI SINI
+    // ═══════════════════ KIRIN 9000 ═══════════════════
+    { device: "Huawei P50 Pro", code: "JAD", chipset: "kirin-9000", category: "solution-id" },
+    { device: "Huawei Mate 40 Pro", code: "NOH", chipset: "kirin-9000", category: "solution-id" },
+    { device: "Huawei Mate 40 RS Porsche", code: "NOP", chipset: "kirin-9000", category: "solution-id" },
+    { device: "Huawei Mate X2", code: "TET-AN00", chipset: "kirin-9000", category: "solution-id" },
+    { device: "Huawei MatePad Pro 12.6", code: "WGR-W09/W19/AN19", chipset: "kirin-9000", category: "solution-id" },
+    
+    // ═══════════════════ KIRIN 9000E ═══════════════════
+    { device: "Huawei Mate 40", code: "OCE-AL50", chipset: "kirin-9000e", category: "solution-id" },
+    { device: "Huawei Mate 40", code: "OCE-AN10", chipset: "kirin-9000e", category: "solution-id" },
+    { device: "Huawei Mate 40 (Chip Off)", code: "OCE-AN50", chipset: "kirin-9000e", category: "solution-id" },
+    { device: "Huawei TET (Chip Off)", code: "TET-AN50", chipset: "kirin-9000e", category: "solution-id" },
 ];
 
 const grid = document.getElementById('firmwareGrid');
 const searchInput = document.getElementById('fwSearch');
-const filterSelect = document.getElementById('fwFilter');
+const chipFilter = document.getElementById('fwChipFilter');
+const categoryFilter = document.getElementById('fwCategoryFilter');
 const noResults = document.getElementById('fwNoResults');
+
+function generateWaLink(fw) {
+    const cat = categoryLabels[fw.category] || categoryLabels['firmware'];
+    const message = encodeURIComponent(
+`Hello AOS, I want to request:
+
+📱 Device: ${fw.device} (${fw.code})
+📁 File: ${cat.label}
+🔧 Chipset: ${fw.chipset.replace(/-/g, ' ').toUpperCase()}
+
+Please provide pricing and process info. Thank you!`
+    );
+    return `https://wa.me/${waNumber}?text=${message}`;
+}
 
 function renderFirmware(data) {
     grid.innerHTML = '';
@@ -1824,23 +1935,27 @@ function renderFirmware(data) {
     }
     noResults.style.display = 'none';
     data.forEach(fw => {
+        const cat = categoryLabels[fw.category] || categoryLabels['firmware'];
+        const waLink = generateWaLink(fw);
         const card = document.createElement('div');
         card.className = 'fw-card';
         card.innerHTML = `
-            <div class="fw-card-header">
-                <div class="fw-icon">📱</div>
-                <div class="fw-title">
-                    <h4>${fw.model}</h4>
-                    <span>${fw.code}</span>
-                </div>
+            <div class="fw-card-category" style="background:${cat.color}20; color:${cat.color}; border: 1px solid ${cat.color}40;">
+                ${cat.icon} ${cat.label}
             </div>
-            <div class="fw-info">
-                <div class="fw-row"><span class="label">Version</span><span class="value">${fw.version}</span></div>
-                <div class="fw-row"><span class="label">Chipset</span><span class="value highlight">${fw.chip}</span></div>
-                <div class="fw-row"><span class="label">Size</span><span class="value">${fw.size}</span></div>
-                <div class="fw-row"><span class="label">Updated</span><span class="value">${fw.date}</span></div>
+            <div class="fw-device-name">${fw.device}</div>
+            <div class="fw-device-code">${fw.code}</div>
+            <div class="fw-chip-tag">${fw.chipset.replace(/-/g, ' ').toUpperCase()}</div>
+            <div class="fw-status">
+                <span class="fw-status-dot"></span>
+                Available
             </div>
-            <a href="${fw.link}" class="fw-download">⬇ Download</a>
+            <a href="${waLink}" class="fw-download wa-btn" target="_blank">
+                <svg class="wa-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+                Request via WhatsApp
+            </a>
         `;
         grid.appendChild(card);
     });
@@ -1848,17 +1963,23 @@ function renderFirmware(data) {
 
 function filterFirmware() {
     const query = searchInput.value.toLowerCase();
-    const chip = filterSelect.value;
+    const chip = chipFilter.value;
+    const category = categoryFilter.value;
+    
     const filtered = firmwareData.filter(fw => {
-        const matchSearch = fw.model.toLowerCase().includes(query) || fw.code.toLowerCase().includes(query) || fw.version.toLowerCase().includes(query);
+        const matchSearch = fw.device.toLowerCase().includes(query) || 
+                           fw.code.toLowerCase().includes(query) || 
+                           fw.fileName.toLowerCase().includes(query);
         const matchChip = chip === 'all' || fw.chipset === chip;
-        return matchSearch && matchChip;
+        const matchCategory = category === 'all' || fw.category === category;
+        return matchSearch && matchChip && matchCategory;
     });
     renderFirmware(filtered);
 }
 
 searchInput.addEventListener('input', filterFirmware);
-filterSelect.addEventListener('change', filterFirmware);
+chipFilter.addEventListener('change', filterFirmware);
+categoryFilter.addEventListener('change', filterFirmware);
 
 // Initial render
 renderFirmware(firmwareData);
