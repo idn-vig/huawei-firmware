@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,46 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* ───────────────────────────── LOADING SCREEN */
+        .loader-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+        .loader-wrapper.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .loader-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 30px;
+            letter-spacing: -0.02em;
+        }
+        .loader-logo span { color: #0071e3; }
+        .loader-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top-color: #0071e3;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ───────────────────────────── THEME VARIABLES */
         :root {
             --bg: #000;
             --surface: #111;
@@ -17,6 +57,54 @@
             --accent: #0071e3;
             --border: rgba(255,255,255,0.08);
         }
+        [data-theme="light"] {
+            --bg: #ffffff;
+            --surface: #f5f5f7;
+            --card: #ffffff;
+            --text: #1d1d1f;
+            --muted: #6e6e73;
+            --accent: #0071e3;
+            --border: rgba(0,0,0,0.08);
+        }
+
+        /* ───────────────────────────── SCROLL ANIMATIONS */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .reveal-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .reveal-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .reveal-scale.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body {
@@ -25,6 +113,7 @@
             color: var(--text);
             line-height: 1.6;
             overflow-x: hidden;
+            transition: background 0.3s, color 0.3s;
         }
 
         /* ───────────────────────────── NAV */
@@ -36,6 +125,10 @@
             backdrop-filter: saturate(180%) blur(20px);
             z-index: 100;
             border-bottom: 1px solid var(--border);
+            transition: background 0.3s;
+        }
+        [data-theme="light"] nav {
+            background: rgba(255,255,255,0.72);
         }
         .nav-inner {
             max-width: 1024px;
@@ -72,6 +165,24 @@
             transition: opacity 0.25s;
         }
         .nav-cta:hover { opacity: 0.85; }
+
+        /* ───────────────────────────── THEME TOGGLE */
+        .theme-toggle {
+            background: var(--card);
+            border: 1px solid var(--border);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s, transform 0.3s;
+        }
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
 
         /* ───────────────────────────── HAMBURGER MENU */
         .nav-toggle {
@@ -116,6 +227,9 @@
             border-bottom: 1px solid var(--border);
             z-index: 99;
         }
+        [data-theme="light"] .mobile-menu {
+            background: rgba(255,255,255,0.95);
+        }
         .mobile-menu.active {
             display: block;
         }
@@ -147,7 +261,90 @@
             background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(120,119,198,0.15), transparent),
                         linear-gradient(180deg, #000 0%, #0a0a0c 100%);
             position: relative;
+            overflow: hidden;
         }
+        [data-theme="light"] .hero {
+            background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0,113,227,0.08), transparent),
+                        linear-gradient(180deg, #fff 0%, #f5f5f7 100%);
+        }
+        
+        /* Animated Particles Background */
+        .hero-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 15s infinite ease-in-out;
+        }
+        .particle:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 20s; }
+        .particle:nth-child(2) { left: 20%; animation-delay: 2s; animation-duration: 18s; }
+        .particle:nth-child(3) { left: 30%; animation-delay: 4s; animation-duration: 22s; }
+        .particle:nth-child(4) { left: 40%; animation-delay: 1s; animation-duration: 16s; }
+        .particle:nth-child(5) { left: 50%; animation-delay: 3s; animation-duration: 19s; }
+        .particle:nth-child(6) { left: 60%; animation-delay: 5s; animation-duration: 21s; }
+        .particle:nth-child(7) { left: 70%; animation-delay: 2s; animation-duration: 17s; }
+        .particle:nth-child(8) { left: 80%; animation-delay: 4s; animation-duration: 23s; }
+        .particle:nth-child(9) { left: 90%; animation-delay: 1s; animation-duration: 20s; }
+        .particle:nth-child(10) { left: 15%; animation-delay: 3s; animation-duration: 18s; }
+        .particle:nth-child(11) { left: 35%; animation-delay: 0s; animation-duration: 24s; }
+        .particle:nth-child(12) { left: 55%; animation-delay: 2s; animation-duration: 16s; }
+        .particle:nth-child(13) { left: 75%; animation-delay: 4s; animation-duration: 22s; }
+        .particle:nth-child(14) { left: 85%; animation-delay: 1s; animation-duration: 19s; }
+        .particle:nth-child(15) { left: 25%; animation-delay: 5s; animation-duration: 21s; }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.4;
+            }
+            50% {
+                opacity: 0.2;
+            }
+            90% {
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateY(-100vh) scale(1);
+                opacity: 0;
+            }
+        }
+        
+        /* Animated Gradient Orbs */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(0, 113, 227, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(120, 119, 198, 0.08) 0%, transparent 50%);
+            animation: gradientMove 20s ease-in-out infinite;
+            z-index: 0;
+        }
+        @keyframes gradientMove {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(5%, 5%) rotate(5deg); }
+            50% { transform: translate(0, 10%) rotate(0deg); }
+            75% { transform: translate(-5%, 5%) rotate(-5deg); }
+        }
+        
+        .hero > * { position: relative; z-index: 1; }
+        
         .hero-eyebrow {
             font-size: 0.95rem;
             letter-spacing: 0.04em;
@@ -316,6 +513,7 @@
 
         /* ───────────────────────────── SERVICES */
         .services { background: linear-gradient(180deg, #0a0a0c, #000); }
+        [data-theme="light"] .services { background: linear-gradient(180deg, #fff, #f5f5f7); }
         .services-grid {
             margin-top: 60px;
             display: grid;
@@ -391,23 +589,50 @@
 
         /* ───────────────────────────── TESTIMONIALS */
         .testimonials { background: linear-gradient(180deg, #000, #0a0a0c); }
-        .testimonial-grid {
+        [data-theme="light"] .testimonials { background: linear-gradient(180deg, #f5f5f7, #fff); }
+        
+        /* Testimonial Carousel */
+        .testimonial-carousel-wrapper {
+            position: relative;
             margin-top: 60px;
+            overflow: hidden;
+        }
+        .testimonial-carousel {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        .testimonial-slide {
+            min-width: 100%;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 24px;
+            padding: 0 10px;
         }
         .testimonial-card {
             background: var(--card);
             border: 1px solid var(--border);
             border-radius: 20px;
             padding: 32px 28px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        [data-theme="light"] .testimonial-card:hover {
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
         .testimonial-card p {
             font-size: 1rem;
             color: var(--text);
             margin-bottom: 20px;
             line-height: 1.7;
+        }
+        .testimonial-stars {
+            color: #ffc107;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
         }
         .testimonial-author {
             display: flex;
@@ -428,6 +653,29 @@
         .testimonial-info span { display: block; }
         .testimonial-info .name { font-weight: 600; }
         .testimonial-info .role { color: var(--muted); font-size: 0.85rem; }
+        
+        /* Carousel Controls */
+        .carousel-controls {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 30px;
+        }
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border);
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+        }
+        .carousel-dot.active {
+            background: var(--accent);
+            transform: scale(1.2);
+        }
+        .carousel-dot:hover {
+            background: var(--muted);
+        }
 
         /* ───────────────────────────── FAQ */
         .faq { background: var(--bg); }
@@ -458,6 +706,7 @@
 
         /* ───────────────────────────── FIRMWARE */
         .firmware { background: linear-gradient(180deg, #0a0a0c, #000); }
+        [data-theme="light"] .firmware { background: linear-gradient(180deg, #f5f5f7, #fff); }
         .firmware-header {
             display: flex;
             flex-wrap: wrap;
@@ -630,41 +879,240 @@
             font-size: 0.85rem;
         }
 
-        /* ───────────────────────────── FLOATING WA */
-        .wa-float {
+        /* ─────────────────────────────── LIVE CHAT WIDGET */
+        .chat-widget {
             position: fixed;
             bottom: 28px;
             right: 28px;
-            z-index: 90;
+            z-index: 95;
         }
-        .wa-float a {
-            width: 58px;
-            height: 58px;
-            background: #25d366;
+        .chat-bubble {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #0071e3, #5856d6);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.7rem;
-            color: #fff;
-            text-decoration: none;
-            box-shadow: 0 8px 28px rgba(37,211,102,0.35);
-            transition: transform 0.25s;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(0,113,227,0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: pulse 2s infinite;
         }
-        .wa-float a:hover { transform: scale(1.08); }
+        .chat-bubble:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 40px rgba(0,113,227,0.5);
+        }
+        .chat-bubble span { font-size: 1.6rem; }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 8px 30px rgba(0,113,227,0.4); }
+            50% { box-shadow: 0 8px 40px rgba(0,113,227,0.6); }
+        }
+        .chat-popup {
+            position: absolute;
+            bottom: 75px;
+            right: 0;
+            width: 320px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px) scale(0.95);
+            transition: all 0.3s ease;
+        }
+        .chat-popup.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+        .chat-header {
+            background: linear-gradient(135deg, #0071e3, #5856d6);
+            padding: 20px;
+            color: #fff;
+        }
+        .chat-header h4 { margin: 0 0 4px; font-size: 1.1rem; }
+        .chat-header p { margin: 0; font-size: 0.85rem; opacity: 0.9; }
+        .chat-body { padding: 20px; }
+        .chat-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .chat-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.25s;
+        }
+        .chat-option:hover {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+        .chat-option .icon { font-size: 1.3rem; }
+        .chat-option .text { font-size: 0.9rem; font-weight: 500; }
+        .chat-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.25s;
+        }
+        .chat-close:hover { opacity: 1; }
+
+        /* ─────────────────────────────── DEVICE STATUS CHECKER */
+        .device-checker {
+            background: linear-gradient(135deg, rgba(0,113,227,0.1), rgba(88,86,214,0.1));
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            margin-top: 60px;
+        }
+        .checker-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .checker-subtitle {
+            color: var(--muted);
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+        }
+        .checker-form {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .checker-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 16px 20px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.25s, box-shadow 0.25s;
+        }
+        .checker-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0,113,227,0.15);
+        }
+        .checker-input::placeholder { color: var(--muted); }
+        .checker-btn {
+            padding: 16px 32px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.25s, transform 0.25s;
+        }
+        .checker-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        .checker-result {
+            margin-top: 24px;
+            padding: 20px;
+            background: var(--card);
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            display: none;
+        }
+        .checker-result.active { display: block; animation: fadeIn 0.3s ease; }
+        .checker-result.success { border-color: #34c759; }
+        .checker-result.error { border-color: #ff3b30; }
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .result-icon { font-size: 1.5rem; }
+        .result-title { font-weight: 600; font-size: 1.1rem; }
+        .result-details { color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─────────────────────────────── BOTTOM NAV BAR (Mobile) */
+        .bottom-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 65px;
+            background: rgba(17,17,17,0.95);
+            backdrop-filter: saturate(180%) blur(20px);
+            border-top: 1px solid var(--border);
+            z-index: 100;
+            padding: 8px 0 12px;
+        }
+        [data-theme="light"] .bottom-nav {
+            background: rgba(255,255,255,0.95);
+        }
+        .bottom-nav-inner {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .bottom-nav a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.65rem;
+            transition: color 0.25s;
+            padding: 4px 12px;
+        }
+        .bottom-nav a:hover,
+        .bottom-nav a.active {
+            color: var(--accent);
+        }
+        .bottom-nav a .icon {
+            font-size: 1.3rem;
+        }
 
         /* ───────────────────────────── RESPONSIVE */
         @media (max-width: 768px) {
             .nav-links { display: none; }
             .nav-toggle { display: flex; }
-            .hero { padding: 120px 20px 60px; min-height: auto; }
+            .hero { padding: 120px 20px 80px; min-height: auto; }
             .hero h1 { font-size: 1.8rem; }
             .hero-lead { font-size: 0.95rem; }
-            .hero-image { margin-top: 40px; }
-            .hero-image img { max-width: 280px; }
+            .hero-image { margin-top: 40px; overflow: hidden; }
+            .hero-image img { max-width: 100%; width: 260px; height: auto; object-fit: contain; }
             .hero-actions { flex-direction: column; gap: 12px; }
             .hero-actions .btn { width: 100%; text-align: center; }
-            section { padding: 60px 16px; }
+            section { padding: 60px 16px 80px; }
             .section-title { font-size: 1.6rem; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
             .stat-number { font-size: 1.8rem; }
@@ -676,11 +1124,16 @@
             .firmware-filters { width: 100%; }
             .firmware-filters select { width: 100%; }
             .footer-grid { grid-template-columns: 1fr; gap: 30px; text-align: center; }
+            .footer { padding-bottom: 80px; }
             .marquee { font-size: 0.75rem; }
             .cta-section h2 { font-size: 1.5rem; }
             .faq-question { font-size: 0.95rem; padding: 16px; }
             .faq-answer { padding: 0 16px 16px; }
-            .whatsapp-float { bottom: 16px; right: 16px; width: 50px; height: 50px; font-size: 1.4rem; }
+            .chat-widget { display: none; }
+            .bottom-nav { display: block; }
+            .device-checker { padding: 24px; margin-top: 40px; }
+            .checker-form { flex-direction: column; }
+            .checker-btn { width: 100%; }
         }
 
         @media (max-width: 480px) {
@@ -695,6 +1148,12 @@
 </head>
 <body>
 
+<!-- LOADING SCREEN -->
+<div class="loader-wrapper" id="loader">
+    <div class="loader-logo">Android <span>Online</span> Service</div>
+    <div class="loader-spinner"></div>
+</div>
+
 <!-- NAV -->
 <nav>
     <div class="nav-inner">
@@ -708,6 +1167,9 @@
             <a href="#faq">FAQ</a>
         </div>
         <div style="display:flex;align-items:center;gap:12px;">
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                <span id="themeIcon">☀️</span>
+            </button>
             <a href="https://wa.me/6282234370999" class="nav-cta" target="_blank">Contact</a>
             <button class="nav-toggle" onclick="toggleMobileMenu()" aria-label="Menu">
                 <span></span>
@@ -721,7 +1183,7 @@
     <a href="#stats" onclick="closeMobileMenu()">Stats</a>
     <a href="#services" onclick="closeMobileMenu()">Services</a>
     <a href="#firmware" onclick="closeMobileMenu()">Firmware</a>
-    <a href="#why" onclick="closeMobileMenu()">Why Us</a>
+    <a href="#why" onclick="closeMobileMenu()">Why Us</a></a>
     <a href="#testimonials" onclick="closeMobileMenu()">Reviews</a>
     <a href="#faq" onclick="closeMobileMenu()">FAQ</a>
     <a href="https://wa.me/6282234370999" target="_blank">💬 WhatsApp</a>
@@ -729,17 +1191,36 @@
 
 <!-- HERO -->
 <section class="hero" id="hero">
-    <p class="hero-eyebrow">Remote Diagnostics & Firmware Support</p>
-    <h1>Your Huawei Repair Partner Kirin, Qualcomm & SPD</h1>
-    <p class="hero-lead">
+    <!-- Animated Particles -->
+    <div class="hero-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+    
+    <p class="hero-eyebrow reveal">Remote Diagnostics & Firmware Support</p>
+    <h1 class="reveal">Your Huawei Repair Partner Kirin, Qualcomm & SPD</h1>
+    <p class="hero-lead reveal">
         Fast, secure, and traceable recovery for Kirin, Qualcomm Snapdragon, and SPD/Unisoc platforms.
         We solve firmware failures, boot loops, and stubborn hang-logo cases around the clock.
     </p>
-    <div class="hero-actions">
+    <div class="hero-actions reveal">
         <a href="https://wa.me/6282234370999" class="btn btn-primary" target="_blank">Request Help</a>
         <a href="#services" class="btn btn-outline">View Services</a>
     </div>
-    <div class="hero-image">
+    <div class="hero-image reveal-scale">
         <img src="mate.webp" alt="Huawei Mate 40 Pro" loading="lazy">
     </div>
 </section>
@@ -761,23 +1242,23 @@
 <!-- STATS -->
 <section class="stats" id="stats">
     <div class="section-inner">
-        <p class="section-label">Our Impact</p>
-        <h2 class="section-title">Numbers that speak for themselves</h2>
-        <p class="section-subtitle">Trusted by technicians and device owners across the globe.</p>
+        <p class="section-label reveal">Our Impact</p>
+        <h2 class="section-title reveal">Numbers that speak for themselves</h2>
+        <p class="section-subtitle reveal">Trusted by technicians and device owners across the globe.</p>
         <div class="stats-grid">
-            <div class="stat-card">
+            <div class="stat-card reveal-scale" style="transition-delay: 0.1s">
                 <div class="number">15K+</div>
                 <div class="label">Devices Unlocked</div>
             </div>
-            <div class="stat-card">
+            <div class="stat-card reveal-scale" style="transition-delay: 0.2s">
                 <div class="number">6h</div>
                 <div class="label">Avg Response Time</div>
             </div>
-            <div class="stat-card">
+            <div class="stat-card reveal-scale" style="transition-delay: 0.3s">
                 <div class="number">99%</div>
                 <div class="label">Success Rate</div>
             </div>
-            <div class="stat-card">
+            <div class="stat-card reveal-scale" style="transition-delay: 0.4s">
                 <div class="number">24/7</div>
                 <div class="label">Support Available</div>
             </div>
@@ -788,11 +1269,11 @@
 <!-- SERVICES -->
 <section class="services" id="services">
     <div class="section-inner">
-        <p class="section-label">What We Offer</p>
-        <h2 class="section-title">Professional Remote Services</h2>
-        <p class="section-subtitle">End-to-end solutions for Huawei & Honor chipset issues.</p>
+        <p class="section-label reveal">What We Offer</p>
+        <h2 class="section-title reveal">Professional Remote Services</h2>
+        <p class="section-subtitle reveal">End-to-end solutions for Huawei & Honor chipset issues.</p>
         <div class="services-grid">
-            <div class="service-card">
+            <div class="service-card reveal" style="transition-delay: 0.1s">
                 <div class="service-icon">🔓</div>
                 <h3>HiSilicon ID Removal</h3>
                 <p>Permanent ID bypass for Kirin 710, 810, 820, 985, 990, 9000 chipsets with signed Huawei method.</p>
@@ -801,7 +1282,7 @@
                     <span class="service-tag">Remote</span>
                 </div>
             </div>
-            <div class="service-card">
+            <div class="service-card reveal" style="transition-delay: 0.15s">
                 <div class="service-icon">🛠️</div>
                 <h3>FRP & Screen Lock</h3>
                 <p>Fast factory reset protection and pattern/password removal without data wipe where possible.</p>
@@ -810,7 +1291,7 @@
                     <span class="service-tag">Remote</span>
                 </div>
             </div>
-            <div class="service-card">
+            <div class="service-card reveal" style="transition-delay: 0.2s">
                 <div class="service-icon">📲</div>
                 <h3>Firmware Flashing</h3>
                 <p>Official ROM installation, downgrade, and recovery for bricked or boot-loop devices.</p>
@@ -819,7 +1300,7 @@
                     <span class="service-tag">File Provided</span>
                 </div>
             </div>
-            <div class="service-card">
+            <div class="service-card reveal" style="transition-delay: 0.25s">
                 <div class="service-icon">🔧</div>
                 <h3>IMEI Repair</h3>
                 <p>Restore baseband and IMEI on supported Kirin and SPD devices using secure server method.</p>
@@ -828,7 +1309,7 @@
                     <span class="service-tag">Server</span>
                 </div>
             </div>
-            <div class="service-card">
+            <div class="service-card reveal" style="transition-delay: 0.3s">
                 <div class="service-icon">🔑</div>
                 <h3>Bootloader Unlock</h3>
                 <p>Official and test-point methods for unlocking bootloader on newer Huawei devices.</p>
@@ -837,7 +1318,7 @@
                     <span class="service-tag">Consultation</span>
                 </div>
             </div>
-            <div class="service-card">
+            <div class="service-card reveal" style="transition-delay: 0.35s">
                 <div class="service-icon">📦</div>
                 <h3>Firmware Files</h3>
                 <p>Access our library of verified stock ROMs, updates, and recovery images for Huawei & Honor.</p>
@@ -847,29 +1328,46 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Device Status Checker -->
+        <div class="device-checker reveal">
+            <div class="checker-title">🔍 Device Status Checker</div>
+            <div class="checker-subtitle">Enter your device model or IMEI to check repair compatibility and estimated service time.</div>
+            <div class="checker-form">
+                <input type="text" class="checker-input" id="deviceInput" placeholder="Enter Model (e.g. P40 Pro) or IMEI...">
+                <button class="checker-btn" onclick="checkDeviceStatus()">Check Status</button>
+            </div>
+            <div class="checker-result" id="checkerResult">
+                <div class="result-header">
+                    <span class="result-icon" id="resultIcon">✅</span>
+                    <span class="result-title" id="resultTitle">Device Compatible</span>
+                </div>
+                <div class="result-details" id="resultDetails"></div>
+            </div>
+        </div>
     </div>
 </section>
 
 <!-- WHY US -->
 <section class="why" id="why">
     <div class="section-inner">
-        <p class="section-label">Why Choose Us</p>
-        <h2 class="section-title">Built for professionals, trusted by everyone</h2>
-        <p class="section-subtitle">We combine deep chipset expertise with enterprise-grade service standards.</p>
+        <p class="section-label reveal">Why Choose Us</p>
+        <h2 class="section-title reveal">Built for professionals, trusted by everyone</h2>
+        <p class="section-subtitle reveal">We combine deep chipset expertise with enterprise-grade service standards.</p>
         <div class="why-grid">
-            <div class="why-card">
+            <div class="why-card reveal-left" style="transition-delay: 0.1s">
                 <h4>🔒 Signed Methods</h4>
                 <p>We use official Huawei pathways and verified tools—no risky exploits.</p>
             </div>
-            <div class="why-card">
+            <div class="why-card reveal-right" style="transition-delay: 0.2s">
                 <h4>⏱️ Rapid SLA</h4>
                 <p>Most remote jobs completed within 6 hours. Priority queue available.</p>
             </div>
-            <div class="why-card">
+            <div class="why-card reveal-left" style="transition-delay: 0.3s">
                 <h4>🌍 Global Reach</h4>
                 <p>Serving technicians and end-users in 45+ countries with 24/7 support.</p>
             </div>
-            <div class="why-card">
+            <div class="why-card reveal-right" style="transition-delay: 0.4s">
                 <h4>💬 Transparent Pricing</h4>
                 <p>No hidden fees. Get a clear quote before any work begins.</p>
             </div>
@@ -880,38 +1378,84 @@
 <!-- TESTIMONIALS -->
 <section class="testimonials" id="testimonials">
     <div class="section-inner">
-        <p class="section-label">What People Say</p>
-        <h2 class="section-title">Real feedback from real customers</h2>
-        <div class="testimonial-grid">
-            <div class="testimonial-card">
-                <p>"Kirin 990 ID removal done in under 4 hours. Very professional, clear communication throughout."</p>
-                <div class="testimonial-author">
-                    <div class="testimonial-avatar">A</div>
-                    <div class="testimonial-info">
-                        <span class="name">Andi Wijaya</span>
-                        <span class="role">Phone Technician, Jakarta</span>
+        <p class="section-label reveal">What People Say</p>
+        <h2 class="section-title reveal">Real feedback from real customers</h2>
+        <div class="testimonial-carousel-wrapper">
+            <div class="testimonial-carousel" id="testimonialCarousel">
+                <div class="testimonial-slide">
+                    <div class="testimonial-card reveal-scale">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p>"Kirin 990 ID removal done in under 4 hours. Very professional, clear communication throughout."</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">A</div>
+                            <div class="testimonial-info">
+                                <span class="name">Andi Wijaya</span>
+                                <span class="role">Phone Technician, Jakarta</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card reveal-scale" style="transition-delay: 0.1s">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p>"Needed urgent FRP bypass for a client. They delivered same-day. Highly recommended!"</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">R</div>
+                            <div class="testimonial-info">
+                                <span class="name">Rizky Pratama</span>
+                                <span class="role">Gadget Shop Owner</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card reveal-scale" style="transition-delay: 0.2s">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p>"Firmware file was exactly what I needed. Fast download link and great support."</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">D</div>
+                            <div class="testimonial-info">
+                                <span class="name">Dimas Saputra</span>
+                                <span class="role">IT Freelancer</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-slide">
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p>"P40 Pro bootloop fixed in 2 hours! Thought my phone was dead but they revived it. Amazing service!"</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">B</div>
+                            <div class="testimonial-info">
+                                <span class="name">Budi Santoso</span>
+                                <span class="role">Business Owner, Surabaya</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p>"Best service for Huawei repairs. IMEI repair done perfectly. Will use again!"</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">S</div>
+                            <div class="testimonial-info">
+                                <span class="name">Sarah Chen</span>
+                                <span class="role">Phone Retailer, Singapore</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">★★★★☆</div>
+                        <p>"Very knowledgeable team. Helped me understand the whole process. Transparent pricing too."</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">M</div>
+                            <div class="testimonial-info">
+                                <span class="name">Michael Tan</span>
+                                <span class="role">Tech Enthusiast</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="testimonial-card">
-                <p>"Needed urgent FRP bypass for a client. They delivered same-day. Highly recommended!"</p>
-                <div class="testimonial-author">
-                    <div class="testimonial-avatar">R</div>
-                    <div class="testimonial-info">
-                        <span class="name">Rizky Pratama</span>
-                        <span class="role">Gadget Shop Owner</span>
-                    </div>
-                </div>
-            </div>
-            <div class="testimonial-card">
-                <p>"Firmware file was exactly what I needed. Fast download link and great support."</p>
-                <div class="testimonial-author">
-                    <div class="testimonial-avatar">D</div>
-                    <div class="testimonial-info">
-                        <span class="name">Dimas Saputra</span>
-                        <span class="role">IT Freelancer</span>
-                    </div>
-                </div>
+            <div class="carousel-controls">
+                <div class="carousel-dot active" onclick="goToSlide(0)"></div>
+                <div class="carousel-dot" onclick="goToSlide(1)"></div>
             </div>
         </div>
     </div>
@@ -920,8 +1464,8 @@
 <!-- FAQ -->
 <section class="faq" id="faq">
     <div class="section-inner">
-        <p class="section-label">FAQ</p>
-        <h2 class="section-title">Common questions</h2>
+        <p class="section-label reveal">FAQ</p>
+        <h2 class="section-title reveal">Common questions</h2>
         <div class="faq-list">
             <div class="faq-item">
                 <div class="faq-q">How does remote service work?</div>
@@ -1016,13 +1560,123 @@
     </div>
 </footer>
 
-<!-- FLOATING WA -->
-<div class="wa-float">
-    <a href="https://wa.me/6282234370999" target="_blank">💬</a>
+<!-- LIVE CHAT WIDGET -->
+<div class="chat-widget" id="chatWidget">
+    <div class="chat-popup" id="chatPopup">
+        <button class="chat-close" onclick="toggleChat()">✕</button>
+        <div class="chat-header">
+            <h4>💬 Need Help?</h4>
+            <p>Choose how you'd like to connect with us</p>
+        </div>
+        <div class="chat-body">
+            <div class="chat-options">
+                <a href="https://wa.me/6282234370999" target="_blank" class="chat-option">
+                    <span class="icon">📱</span>
+                    <span class="text">WhatsApp Chat</span>
+                </a>
+                <a href="https://t.me/aosunlocker" target="_blank" class="chat-option">
+                    <span class="icon">✈️</span>
+                    <span class="text">Telegram</span>
+                </a>
+                <a href="mailto:support@aosunlock.id" class="chat-option">
+                    <span class="icon">📧</span>
+                    <span class="text">Email Us</span>
+                </a>
+                <a href="#services" class="chat-option" onclick="toggleChat()">
+                    <span class="icon">🔧</span>
+                    <span class="text">View Services</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="chat-bubble" onclick="toggleChat()">
+        <span>💬</span>
+    </div>
 </div>
 
 <script>
-// Mobile Menu Toggle
+// ═══════════════════════════════════════════════════════════
+// LOADING SCREEN
+// ═══════════════════════════════════════════════════════════
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        document.getElementById('loader').classList.add('hidden');
+    }, 1500);
+});
+
+// ═══════════════════════════════════════════════════════════
+// DARK/LIGHT THEME TOGGLE
+// ═══════════════════════════════════════════════════════════
+function toggleTheme() {
+    const html = document.documentElement;
+    const themeIcon = document.getElementById('themeIcon');
+    if (html.getAttribute('data-theme') === 'dark') {
+        html.setAttribute('data-theme', 'light');
+        themeIcon.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+    } else {
+        html.setAttribute('data-theme', 'dark');
+        themeIcon.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+    }
+}
+
+// Load saved theme
+(function() {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    const themeIcon = document.getElementById('themeIcon');
+    if (themeIcon) {
+        themeIcon.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+    }
+})();
+
+// ═══════════════════════════════════════════════════════════
+// SCROLL REVEAL ANIMATIONS
+// ═══════════════════════════════════════════════════════════
+function revealOnScroll() {
+    const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+    const windowHeight = window.innerHeight;
+    
+    reveals.forEach(el => {
+        const elementTop = el.getBoundingClientRect().top;
+        const revealPoint = 120;
+        
+        if (elementTop < windowHeight - revealPoint) {
+            el.classList.add('active');
+        }
+    });
+}
+
+window.addEventListener('scroll', revealOnScroll);
+window.addEventListener('load', revealOnScroll);
+
+// ═══════════════════════════════════════════════════════════
+// TESTIMONIAL CAROUSEL
+// ═══════════════════════════════════════════════════════════
+let currentSlide = 0;
+const totalSlides = 2;
+
+function goToSlide(index) {
+    currentSlide = index;
+    const carousel = document.getElementById('testimonialCarousel');
+    carousel.style.transform = `translateX(-${index * 100}%)`;
+    
+    // Update dots
+    document.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+    });
+}
+
+// Auto-slide every 5 seconds
+setInterval(() => {
+    currentSlide = (currentSlide + 1) % totalSlides;
+    goToSlide(currentSlide);
+}, 5000);
+
+// ═══════════════════════════════════════════════════════════
+// MOBILE MENU TOGGLE
+// ═══════════════════════════════════════════════════════════
 function toggleMobileMenu() {
     document.querySelector('.nav-toggle').classList.toggle('active');
     document.getElementById('mobileMenu').classList.toggle('active');
@@ -1032,7 +1686,101 @@ function closeMobileMenu() {
     document.getElementById('mobileMenu').classList.remove('active');
 }
 
-// FAQ Toggle
+// ═══════════════════════════════════════════════════════════
+// LIVE CHAT WIDGET
+// ═══════════════════════════════════════════════════════════
+function toggleChat() {
+    document.getElementById('chatPopup').classList.toggle('active');
+}
+
+// Close chat when clicking outside
+document.addEventListener('click', (e) => {
+    const widget = document.getElementById('chatWidget');
+    const popup = document.getElementById('chatPopup');
+    if (popup.classList.contains('active') && !widget.contains(e.target)) {
+        popup.classList.remove('active');
+    }
+});
+
+// ═══════════════════════════════════════════════════════════
+// DEVICE STATUS CHECKER
+// ═══════════════════════════════════════════════════════════
+const supportedDevices = {
+    // Kirin devices
+    'p40 pro': { chipset: 'Kirin 990 5G', support: 'full', services: ['ID Removal', 'FRP', 'Firmware', 'IMEI'], time: '2-6 hours' },
+    'p40': { chipset: 'Kirin 990 5G', support: 'full', services: ['ID Removal', 'FRP', 'Firmware', 'IMEI'], time: '2-6 hours' },
+    'mate 40 pro': { chipset: 'Kirin 9000', support: 'full', services: ['ID Removal', 'FRP', 'Firmware', 'IMEI'], time: '3-8 hours' },
+    'mate 40': { chipset: 'Kirin 9000E', support: 'full', services: ['ID Removal', 'FRP', 'Firmware', 'IMEI'], time: '3-8 hours' },
+    'p30 pro': { chipset: 'Kirin 980', support: 'full', services: ['ID Removal', 'FRP', 'Firmware', 'IMEI'], time: '2-4 hours' },
+    'p30': { chipset: 'Kirin 980', support: 'full', services: ['ID Removal', 'FRP', 'Firmware', 'IMEI'], time: '2-4 hours' },
+    'mate 30 pro': { chipset: 'Kirin 990', support: 'full', services: ['ID Removal', 'FRP', 'Firmware', 'IMEI'], time: '2-6 hours' },
+    'mate 30': { chipset: 'Kirin 990', support: 'full', services: ['ID Removal', 'FRP', 'Firmware'], time: '2-6 hours' },
+    'nova 9': { chipset: 'Kirin 820E', support: 'full', services: ['FRP', 'Firmware', 'Screen Lock'], time: '1-3 hours' },
+    'nova 7i': { chipset: 'Kirin 810', support: 'full', services: ['FRP', 'Firmware', 'Screen Lock'], time: '1-3 hours' },
+    'honor 50': { chipset: 'Kirin 820', support: 'full', services: ['FRP', 'Firmware', 'Screen Lock'], time: '1-3 hours' },
+    'y9a': { chipset: 'Kirin 710A', support: 'partial', services: ['FRP', 'Firmware'], time: '1-2 hours' },
+    // Qualcomm devices  
+    'nova 11 pro': { chipset: 'Snapdragon 778G', support: 'full', services: ['FRP', 'Firmware', 'Screen Lock'], time: '1-2 hours' },
+    'nova 10 pro': { chipset: 'Snapdragon 778G', support: 'full', services: ['FRP', 'Firmware', 'Screen Lock'], time: '1-2 hours' },
+    // SPD devices
+    'y6p': { chipset: 'Unisoc T610', support: 'full', services: ['FRP', 'Firmware', 'Screen Lock'], time: '30min-1 hour' },
+    'y5p': { chipset: 'Unisoc SC9863A', support: 'full', services: ['FRP', 'Firmware'], time: '30min-1 hour' },
+};
+
+function checkDeviceStatus() {
+    const input = document.getElementById('deviceInput').value.toLowerCase().trim();
+    const resultDiv = document.getElementById('checkerResult');
+    const resultIcon = document.getElementById('resultIcon');
+    const resultTitle = document.getElementById('resultTitle');
+    const resultDetails = document.getElementById('resultDetails');
+    
+    if (!input) {
+        resultDiv.className = 'checker-result active error';
+        resultIcon.textContent = '⚠️';
+        resultTitle.textContent = 'Please enter a device model';
+        resultDetails.textContent = 'Example: P40 Pro, Mate 40, Nova 9, Y6p';
+        return;
+    }
+    
+    // Check if input matches any device
+    let foundDevice = null;
+    for (const [device, info] of Object.entries(supportedDevices)) {
+        if (input.includes(device) || device.includes(input)) {
+            foundDevice = { name: device, ...info };
+            break;
+        }
+    }
+    
+    if (foundDevice) {
+        resultDiv.className = 'checker-result active success';
+        resultIcon.textContent = '✅';
+        resultTitle.textContent = `${foundDevice.name.toUpperCase()} - Supported!`;
+        resultDetails.innerHTML = `
+            <strong>Chipset:</strong> ${foundDevice.chipset}<br>
+            <strong>Support Level:</strong> ${foundDevice.support === 'full' ? '🟢 Full Support' : '🟡 Partial Support'}<br>
+            <strong>Available Services:</strong> ${foundDevice.services.join(', ')}<br>
+            <strong>Estimated Time:</strong> ${foundDevice.time}<br><br>
+            <a href="https://wa.me/6282234370999?text=Hi, I need service for ${foundDevice.name.toUpperCase()}" target="_blank" style="color: var(--accent);">💬 Chat Now for Quote</a>
+        `;
+    } else {
+        resultDiv.className = 'checker-result active';
+        resultIcon.textContent = '🔍';
+        resultTitle.textContent = 'Device Not in Quick List';
+        resultDetails.innerHTML = `
+            We may still be able to help! Your device "${input}" isn't in our quick reference, but we support many more models.<br><br>
+            <a href="https://wa.me/6282234370999?text=Hi, can you check if ${input} is supported?" target="_blank" style="color: var(--accent);">💬 Ask Us About Your Device</a>
+        `;
+    }
+}
+
+// Allow Enter key to trigger search
+document.getElementById('deviceInput')?.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') checkDeviceStatus();
+});
+
+// ═══════════════════════════════════════════════════════════
+// FAQ TOGGLE
+// ═══════════════════════════════════════════════════════════
 document.querySelectorAll('.faq-q').forEach(q => {
     q.addEventListener('click', () => {
         q.parentElement.classList.toggle('open');
@@ -1120,6 +1868,28 @@ filterSelect.addEventListener('change', filterFirmware);
 // Initial render
 renderFirmware(firmwareData);
 </script>
+
+<!-- BOTTOM NAV (Mobile) -->
+<nav class="bottom-nav">
+    <div class="bottom-nav-inner">
+        <a href="#hero" class="active">
+            <span class="icon">🏠</span>
+            Home
+        </a>
+        <a href="#firmware">
+            <span class="icon">📱</span>
+            Firmware
+        </a>
+        <a href="#services">
+            <span class="icon">🔧</span>
+            Services
+        </a>
+        <a href="https://wa.me/6282234370999" target="_blank">
+            <span class="icon">💬</span>
+            Chat
+        </a>
+    </div>
+</nav>
 
 </body>
 </html>
