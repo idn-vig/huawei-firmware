@@ -1527,6 +1527,55 @@
         }
 
         /* ─────────────────────────────── LIVE CHAT WIDGET */
+        /* ─────────────────────────────── DOWNLOAD TOOL WIDGET (LEFT) */
+        .download-widget {
+            position: fixed;
+            bottom: 28px;
+            left: 28px;
+            z-index: 1001;
+        }
+        .download-bubble {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            padding: 12px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(34, 197, 94, 0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: download-pulse 2s infinite;
+            text-decoration: none;
+            color: #fff;
+        }
+        .download-bubble:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 40px rgba(34, 197, 94, 0.5);
+            color: #fff;
+        }
+        .download-bubble .dl-icon { font-size: 1.3rem; }
+        .download-bubble .dl-text {
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+        .download-bubble .dl-text small {
+            font-size: 0.65rem;
+            opacity: 0.85;
+            font-weight: 400;
+        }
+        @keyframes download-pulse {
+            0%, 100% { box-shadow: 0 8px 30px rgba(34, 197, 94, 0.4); }
+            50% { box-shadow: 0 8px 40px rgba(34, 197, 94, 0.6); }
+        }
+        @media (max-width: 600px) {
+            .download-widget { bottom: 80px; left: 16px; }
+            .download-bubble { padding: 10px 16px; }
+            .download-bubble .dl-text { font-size: 0.75rem; }
+        }
+
         .chat-widget {
             position: fixed;
             bottom: 28px;
@@ -2472,6 +2521,14 @@
         </div>
     </div>
 </footer>
+
+<!-- DOWNLOAD TOOL WIDGET -->
+<a href="https://drive.google.com/file/d/1-6htQUZXqfO9WM2y2N7dWkHDp4S171Eo/view?usp=sharing" target="_blank" class="download-widget">
+    <div class="download-bubble">
+        <span class="dl-icon">⬇️</span>
+        <span class="dl-text">Free Tool<small>Download Now</small></span>
+    </div>
+</a>
 
 <!-- LIVE CHAT WIDGET -->
 <div class="chat-widget" id="chatWidget">
