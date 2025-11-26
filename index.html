@@ -1537,12 +1537,12 @@
         .download-bubble {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             background: linear-gradient(135deg, #22c55e, #16a34a);
-            padding: 12px 20px;
+            padding: 10px 16px;
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 8px 30px rgba(34, 197, 94, 0.4);
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.35);
             transition: transform 0.3s, box-shadow 0.3s;
             animation: download-pulse 2s infinite;
             text-decoration: none;
@@ -1550,30 +1550,34 @@
         }
         .download-bubble:hover {
             transform: scale(1.05);
-            box-shadow: 0 12px 40px rgba(34, 197, 94, 0.5);
+            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.45);
             color: #fff;
         }
-        .download-bubble .dl-icon { font-size: 1.3rem; }
+        .download-bubble .dl-icon { font-size: 1rem; }
         .download-bubble .dl-text {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             font-weight: 600;
-            display: flex;
-            flex-direction: column;
             line-height: 1.2;
         }
-        .download-bubble .dl-text small {
-            font-size: 0.65rem;
-            opacity: 0.85;
-            font-weight: 400;
-        }
         @keyframes download-pulse {
-            0%, 100% { box-shadow: 0 8px 30px rgba(34, 197, 94, 0.4); }
-            50% { box-shadow: 0 8px 40px rgba(34, 197, 94, 0.6); }
+            0%, 100% { box-shadow: 0 6px 20px rgba(34, 197, 94, 0.35); }
+            50% { box-shadow: 0 6px 28px rgba(34, 197, 94, 0.5); }
         }
-        @media (max-width: 600px) {
-            .download-widget { bottom: 80px; left: 16px; }
-            .download-bubble { padding: 10px 16px; }
-            .download-bubble .dl-text { font-size: 0.75rem; }
+        /* Mobile: Icon only, text hidden */
+        @media (max-width: 768px) {
+            .download-widget { bottom: 90px; left: 16px; }
+            .download-bubble { 
+                width: 48px; 
+                height: 48px; 
+                padding: 0; 
+                justify-content: center;
+                border-radius: 50%;
+            }
+            .download-bubble .dl-icon { font-size: 1.2rem; }
+            .download-bubble .dl-text { display: none; }
+            .chat-widget { bottom: 90px; right: 16px; }
+            .chat-bubble { width: 48px; height: 48px; }
+            .chat-bubble span { font-size: 1.2rem; }
         }
 
         .chat-widget {
@@ -1583,8 +1587,8 @@
             z-index: 1001;
         }
         .chat-bubble {
-            width: 60px;
-            height: 60px;
+            width: 56px;
+            height: 56px;
             background: linear-gradient(135deg, #0071e3, #5856d6);
             border-radius: 50%;
             display: flex;
@@ -2523,10 +2527,10 @@
 </footer>
 
 <!-- DOWNLOAD TOOL WIDGET -->
-<a href="https://drive.google.com/file/d/1-6htQUZXqfO9WM2y2N7dWkHDp4S171Eo/view?usp=sharing" target="_blank" class="download-widget">
+<a href="https://drive.google.com/file/d/1-6htQUZXqfO9WM2y2N7dWkHDp4S171Eo/view?usp=sharing" target="_blank" class="download-widget" title="Free Tool Download">
     <div class="download-bubble">
         <span class="dl-icon">⬇️</span>
-        <span class="dl-text">Free Tool<small>Download Now</small></span>
+        <span class="dl-text">Free Tool</span>
     </div>
 </a>
 
