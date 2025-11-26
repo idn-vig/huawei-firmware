@@ -1535,46 +1535,98 @@
             z-index: 1001;
         }
         .download-bubble {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 8px;
-            background: linear-gradient(135deg, #22c55e, #16a34a);
-            padding: 10px 16px;
-            border-radius: 50px;
+            justify-content: center;
             cursor: pointer;
             box-shadow: 0 6px 20px rgba(34, 197, 94, 0.35);
             transition: transform 0.3s, box-shadow 0.3s;
             animation: download-pulse 2s infinite;
-            text-decoration: none;
-            color: #fff;
         }
         .download-bubble:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.45);
-            color: #fff;
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.5);
         }
-        .download-bubble .dl-icon { font-size: 1rem; }
-        .download-bubble .dl-text {
-            font-size: 0.75rem;
-            font-weight: 600;
-            line-height: 1.2;
-        }
+        .download-bubble span { font-size: 1.4rem; }
         @keyframes download-pulse {
             0%, 100% { box-shadow: 0 6px 20px rgba(34, 197, 94, 0.35); }
-            50% { box-shadow: 0 6px 28px rgba(34, 197, 94, 0.5); }
+            50% { box-shadow: 0 6px 28px rgba(34, 197, 94, 0.55); }
         }
-        /* Mobile: Icon only, text hidden */
+        .download-popup {
+            position: absolute;
+            bottom: 70px;
+            left: 0;
+            width: 300px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px) scale(0.95);
+            transition: all 0.3s ease;
+        }
+        .download-popup.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+        .download-header {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            padding: 18px;
+            color: #fff;
+        }
+        .download-header h4 { margin: 0 0 4px; font-size: 1rem; }
+        .download-header p { margin: 0; font-size: 0.8rem; opacity: 0.9; }
+        .download-body { padding: 16px; }
+        .download-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .download-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.25s;
+        }
+        .download-option:hover {
+            background: #22c55e;
+            color: #fff;
+            border-color: #22c55e;
+        }
+        .download-option .icon { font-size: 1.2rem; }
+        .download-option .text { font-size: 0.85rem; font-weight: 500; }
+        .download-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.1rem;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.25s;
+        }
+        .download-close:hover { opacity: 1; }
+        /* Mobile */
         @media (max-width: 768px) {
             .download-widget { bottom: 90px; left: 16px; }
-            .download-bubble { 
-                width: 48px; 
-                height: 48px; 
-                padding: 0; 
-                justify-content: center;
-                border-radius: 50%;
-            }
-            .download-bubble .dl-icon { font-size: 1.2rem; }
-            .download-bubble .dl-text { display: none; }
+            .download-bubble { width: 48px; height: 48px; }
+            .download-bubble span { font-size: 1.2rem; }
+            .download-popup { width: 280px; left: 0; }
             .chat-widget { bottom: 90px; right: 16px; }
             .chat-bubble { width: 48px; height: 48px; }
             .chat-bubble span { font-size: 1.2rem; }
@@ -2527,12 +2579,34 @@
 </footer>
 
 <!-- DOWNLOAD TOOL WIDGET -->
-<a href="https://drive.google.com/file/d/1-6htQUZXqfO9WM2y2N7dWkHDp4S171Eo/view?usp=sharing" target="_blank" class="download-widget" title="Free Tool Download">
-    <div class="download-bubble">
-        <span class="dl-icon">⬇️</span>
-        <span class="dl-text">Free Tool</span>
+<div class="download-widget" id="downloadWidget">
+    <div class="download-popup" id="downloadPopup">
+        <button class="download-close" onclick="toggleDownload()">✕</button>
+        <div class="download-header">
+            <h4>🛠️ Free Huawei Tool</h4>
+            <p>Read device info instantly</p>
+        </div>
+        <div class="download-body">
+            <div class="download-options">
+                <a href="https://drive.google.com/file/d/1-6htQUZXqfO9WM2y2N7dWkHDp4S171Eo/view?usp=sharing" target="_blank" class="download-option">
+                    <span class="icon">⬇️</span>
+                    <span class="text">Download Free Tool</span>
+                </a>
+                <a href="https://wa.me/6282234370999?text=Hi%2C%20I%20want%20to%20order%20a%20custom%20tool%20with%20my%20name" target="_blank" class="download-option">
+                    <span class="icon">🔧</span>
+                    <span class="text">Order Custom Tool (Your Name)</span>
+                </a>
+                <div class="download-option" style="background: rgba(34,197,94,0.1); border-color: rgba(34,197,94,0.3); cursor: default;">
+                    <span class="icon">ℹ️</span>
+                    <span class="text" style="font-size:0.75rem; color: var(--muted);">We create custom Huawei info tools branded with your name!</span>
+                </div>
+            </div>
+        </div>
     </div>
-</a>
+    <div class="download-bubble" onclick="toggleDownload()">
+        <span>🛠️</span>
+    </div>
+</div>
 
 <!-- LIVE CHAT WIDGET -->
 <div class="chat-widget" id="chatWidget">
@@ -2665,14 +2739,28 @@ function closeMobileMenu() {
 // ═══════════════════════════════════════════════════════════
 function toggleChat() {
     document.getElementById('chatPopup').classList.toggle('active');
+    // Close download popup if open
+    document.getElementById('downloadPopup').classList.remove('active');
 }
 
-// Close chat when clicking outside
+function toggleDownload() {
+    document.getElementById('downloadPopup').classList.toggle('active');
+    // Close chat popup if open
+    document.getElementById('chatPopup').classList.remove('active');
+}
+
+// Close popups when clicking outside
 document.addEventListener('click', (e) => {
-    const widget = document.getElementById('chatWidget');
-    const popup = document.getElementById('chatPopup');
-    if (popup.classList.contains('active') && !widget.contains(e.target)) {
-        popup.classList.remove('active');
+    const chatWidget = document.getElementById('chatWidget');
+    const chatPopup = document.getElementById('chatPopup');
+    const downloadWidget = document.getElementById('downloadWidget');
+    const downloadPopup = document.getElementById('downloadPopup');
+    
+    if (chatPopup.classList.contains('active') && !chatWidget.contains(e.target)) {
+        chatPopup.classList.remove('active');
+    }
+    if (downloadPopup.classList.contains('active') && !downloadWidget.contains(e.target)) {
+        downloadPopup.classList.remove('active');
     }
 });
 
